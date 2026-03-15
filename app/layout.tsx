@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -7,9 +7,15 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
 });
 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
   title: "Ayla Blumberg",
-  description: "Portfolio & Résumé — Ayla Blumberg",
+  description: "Creative · Author · Real Estate · Dallas, TX",
 };
 
 export default function RootLayout({
@@ -17,7 +23,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} ${playfair.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>
