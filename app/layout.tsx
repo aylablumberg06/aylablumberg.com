@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Ayla Blumberg",
   description: "Creative · Author · Real Estate · Dallas, TX",
   icons: {
-    icon: "/icon.svg",
+    icon: "/favicon.png",
   },
 };
 
