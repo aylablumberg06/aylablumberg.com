@@ -244,7 +244,7 @@ export default function Home() {
               className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center shrink-0 shadow-sm"
               style={{ fontFamily: "var(--font-playfair)" }}
             >
-              <span className="text-white text-[11px] font-bold tracking-tight">AB</span>
+              <span className="text-white text-sm font-bold tracking-tight">AB</span>
             </div>
             <span
               className="text-sm font-semibold tracking-[0.15em] uppercase text-pink-400"
@@ -261,7 +261,7 @@ export default function Home() {
               href="#contact"
               className="bg-pink-400 text-white px-5 py-2 rounded-full hover:bg-pink-500 transition-colors"
             >
-              Contact
+              Connect
             </a>
           </div>
         </div>
