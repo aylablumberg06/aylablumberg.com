@@ -268,7 +268,7 @@ export default function Home() {
       </nav>
 
       {/* ── HERO ── */}
-      <section className="bg-white min-h-screen flex items-center px-6 py-20 overflow-hidden">
+      <section className="bg-white min-h-screen flex items-start px-6 pt-6 pb-20 overflow-hidden">
         <div className="max-w-7xl mx-auto w-full grid md:grid-cols-[1fr_360px] gap-12 items-center">
 
           {/* Left: text */}
