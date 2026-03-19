@@ -215,6 +215,10 @@ export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
@@ -239,7 +243,11 @@ export default function Home() {
       {/* ── NAV ── */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            className="flex items-center gap-2.5"
+          >
             <div
               className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center shrink-0 shadow-sm"
               style={{ fontFamily: "var(--font-playfair)" }}
@@ -252,7 +260,7 @@ export default function Home() {
             >
               Ayla Blumberg
             </span>
-          </div>
+          </a>
           <div className="hidden sm:flex items-center gap-8 text-xs tracking-widest uppercase text-gray-400 font-medium">
             <a href="#about" className="hover:text-pink-400 transition-colors">About</a>
             <a href="#services" className="hover:text-pink-400 transition-colors">Services</a>
