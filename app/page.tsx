@@ -583,6 +583,7 @@ export default function Home() {
               { id: "7613482868961987870", rotate: "-4deg", mt: "0px" },
               { id: "7615308084134694174", rotate: "3deg", mt: "48px" },
               { id: "7617710380449615134", rotate: "-2deg", mt: "16px" },
+              { id: "7619396369727458591", rotate: "4deg", mt: "32px" },
             ].map(({ id, rotate, mt }, i) => (
               <Reveal key={id} delay={i * 250}>
                 <div style={{ transform: `rotate(${rotate})`, marginTop: mt }}>
