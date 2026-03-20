@@ -573,7 +573,7 @@ export default function Home() {
           </Reveal>
 
           {/* TikToks in sheet-protector / document style */}
-          <div className="relative flex flex-col md:flex-row justify-center gap-16 items-start">
+          <div className="relative flex flex-col md:flex-row justify-center gap-6 items-start">
             {/* Top-left camera */}
             <div className="absolute -top-10 -left-4 text-8xl pointer-events-none select-none z-10"
               style={{ transform: "rotate(15deg)", filter: "drop-shadow(0 6px 16px rgba(0,0,0,0.5))" }}>
@@ -601,8 +601,8 @@ export default function Home() {
                       <iframe
                         src={`https://www.tiktok.com/embed/v2/${id}`}
                         className="border-0 block"
-                        width="300"
-                        height="540"
+                        width="230"
+                        height="410"
                         allowFullScreen
                         allow="encrypted-media"
                         title="TikTok — Ayla Blumberg"
