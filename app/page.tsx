@@ -103,7 +103,8 @@ const skills = [
   },
   {
     title: "Brand & Web Design",
-    desc: "Built websites and visual identities from scratch — including a full site for Fortifying U. I translate a founder's vision into a platform people actually feel.",
+    desc: "Built websites and visual identities from scratch — including a full site for Design List Collective. I translate a founder's vision into a platform people actually feel.",
+    link: { label: "designlistcollective.com", href: "https://designlistcollective.com/" },
   },
   {
     title: "Content Creation & Editing",
@@ -199,9 +200,19 @@ function Accordion() {
             </span>
           </button>
           {open === i && (
-            <p className="text-gray-500 text-base leading-relaxed pb-6 pl-11 max-w-2xl">
-              {s.desc}
-            </p>
+            <div className="pb-6 pl-11 max-w-2xl">
+              <p className="text-gray-500 text-base leading-relaxed">{s.desc}</p>
+              {"link" in s && s.link && (
+                <a
+                  href={(s.link as {label: string; href: string}).href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-3 text-sm text-pink-400 font-medium hover:text-pink-600 transition-colors"
+                >
+                  ↗ {(s.link as {label: string; href: string}).label}
+                </a>
+              )}
+            </div>
           )}
         </div>
       ))}
