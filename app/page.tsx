@@ -99,7 +99,7 @@ const TICKER =
 const skills = [
   {
     title: "Real Estate",
-    desc: "Texas license in progress (Spring 2026). I'm building toward a career in real estate with a deep focus on client relationships, market knowledge, and long-term investment strategy.",
+    desc: "Passed my Texas real estate exam in April 2026. I'm building a career in real estate with a deep focus on client relationships, market knowledge, and long-term investment strategy.",
   },
   {
     title: "Brand & Web Design",
@@ -134,11 +134,11 @@ const pipeline = [
     detail: "Content · Branding · Design",
   },
   {
-    status: "PENDING",
-    statusColor: "bg-black text-white",
+    status: "ACTIVE",
+    statusColor: "bg-pink-400 text-white",
     title: "Texas Real Estate License",
     sub: "Dallas, TX",
-    desc: "Currently completing coursework. Expected licensure Spring 2026.",
+    desc: "Licensed Texas real estate agent as of April 2026.",
     detail: "Residential · Investment · Luxury",
   },
   {
@@ -591,16 +591,25 @@ export default function Home() {
               📷
             </div>
             {[
-              { id: "7613482868961987870", rotate: "-4deg", mt: "0px" },
-              { id: "7615308084134694174", rotate: "3deg", mt: "48px" },
-              { id: "7617710380449615134", rotate: "-2deg", mt: "16px" },
-              { id: "7619396369727458591", rotate: "4deg", mt: "32px" },
-            ].map(({ id, rotate, mt }, i) => (
+              { id: "7613482868961987870", rotate: "-4deg", mt: "0px", star: false },
+              { id: "7615308084134694174", rotate: "3deg", mt: "48px", star: false },
+              { id: "7617710380449615134", rotate: "-2deg", mt: "16px", star: false },
+              { id: "7619396369727458591", rotate: "4deg", mt: "32px", star: false },
+              { id: "7621974460031143199", rotate: "-3deg", mt: "8px", star: true },
+              { id: "7625016045681577247", rotate: "3deg", mt: "40px", star: false },
+            ].map(({ id, rotate, mt, star }, i) => (
               <Reveal key={id} delay={i * 250}>
                 <div style={{ transform: `rotate(${rotate})`, marginTop: mt }}>
                   {/* Plastic sleeve outer */}
                   <div className="relative bg-gray-100/80 border border-gray-300/60 p-2.5 shadow-2xl"
                     style={{ borderRadius: "3px", backdropFilter: "blur(2px)" }}>
+                    {/* Star badge */}
+                    {star && (
+                      <div className="absolute -top-3 -right-3 z-20 text-2xl pointer-events-none select-none"
+                        style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" }}>
+                        ⭐
+                      </div>
+                    )}
                     {/* Hole punches left edge */}
                     <div className="absolute left-1 top-[22%] w-3.5 h-3.5 rounded-full bg-black/80 shadow-inner" />
                     <div className="absolute left-1 top-[50%] w-3.5 h-3.5 rounded-full bg-black/80 shadow-inner" />
