@@ -584,22 +584,23 @@ export default function Home() {
           </Reveal>
 
           {/* TikToks in sheet-protector / document style */}
-          <div className="relative flex flex-col md:flex-row justify-center gap-6 items-start">
+          <div className="relative">
             {/* Top-left camera */}
             <div className="absolute -top-10 -left-4 text-8xl pointer-events-none select-none z-10"
               style={{ transform: "rotate(15deg)", filter: "drop-shadow(0 6px 16px rgba(0,0,0,0.5))" }}>
               📷
             </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
             {[
-              { id: "7613482868961987870", rotate: "-4deg", mt: "0px", star: false },
-              { id: "7615308084134694174", rotate: "3deg", mt: "48px", star: false },
-              { id: "7617710380449615134", rotate: "-2deg", mt: "16px", star: false },
-              { id: "7619396369727458591", rotate: "4deg", mt: "32px", star: false },
-              { id: "7621974460031143199", rotate: "-3deg", mt: "8px", star: true },
-              { id: "7625016045681577247", rotate: "3deg", mt: "40px", star: false },
-            ].map(({ id, rotate, mt, star }, i) => (
-              <Reveal key={id} delay={i * 250}>
-                <div style={{ transform: `rotate(${rotate})`, marginTop: mt }}>
+              { id: "7613482868961987870", rotate: "-4deg", star: false },
+              { id: "7615308084134694174", rotate: "3deg", star: false },
+              { id: "7617710380449615134", rotate: "-2deg", star: false },
+              { id: "7619396369727458591", rotate: "4deg", star: false },
+              { id: "7621974460031143199", rotate: "-3deg", star: true },
+              { id: "7625016045681577247", rotate: "3deg", star: false },
+            ].map(({ id, rotate, star }, i) => (
+              <Reveal key={id} delay={i * 150}>
+                <div style={{ transform: `rotate(${rotate})` }}>
                   {/* Plastic sleeve outer */}
                   <div className="relative bg-gray-100/80 border border-gray-300/60 p-2.5 shadow-2xl"
                     style={{ borderRadius: "3px", backdropFilter: "blur(2px)" }}>
@@ -639,6 +640,7 @@ export default function Home() {
                 </div>
               </Reveal>
             ))}
+            </div>
           </div>
         </div>
       </section>
