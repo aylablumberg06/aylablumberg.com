@@ -94,7 +94,7 @@ function Barcode() {
 /* ─── DATA ─────────────────────────────────────────────── */
 
 const TICKER =
-  "TEXAS REAL ESTATE LICENSE · IN PROGRESS · UNIVERSITY OF TEXAS · FALL 2026 · PUBLISHED AUTHOR · CONTENT CREATOR · DALLAS → AUSTIN · SALUTATORIAN · 200-HR YOGA CERTIFIED · ";
+  "TEXAS REAL ESTATE LICENSE · PASSED APRIL 2026 · UNIVERSITY OF TEXAS · FALL 2026 · ROSENTHAL LEVY SCHOLAR · FULL RIDE · PUBLISHED AUTHOR · CONTENT CREATOR · DALLAS → AUSTIN · SALUTATORIAN · 200-HR YOGA CERTIFIED · ";
 
 const skills = [
   {
@@ -146,8 +146,8 @@ const pipeline = [
     statusColor: "bg-pink-100 text-pink-500",
     title: "University of Texas",
     sub: "Austin, TX",
-    desc: "Enrolled and heading to UT Austin — Fall 2026.",
-    detail: "Business · Real Estate · Networking",
+    desc: "Heading to UT Austin on a full-ride scholarship as a Rosenthal Levy Scholar — Fall 2026.",
+    detail: "Rosenthal Levy Scholar · Full Ride · Fall 2026",
   },
 ];
 
@@ -275,6 +275,7 @@ export default function Home() {
           <div className="hidden sm:flex items-center gap-8 text-xs tracking-widest uppercase text-gray-400 font-medium">
             <a href="#about" className="hover:text-pink-400 transition-colors">About</a>
             <a href="#services" className="hover:text-pink-400 transition-colors">Services</a>
+            <a href="#built" className="hover:text-pink-400 transition-colors">Built</a>
             <a href="#portfolio" className="hover:text-pink-400 transition-colors">Portfolio</a>
             <a
               href="#contact"
@@ -362,7 +363,7 @@ export default function Home() {
 
               <div className="grid grid-cols-2 gap-3 border-t border-b border-gray-100 py-5 mb-5">
                 {[
-                  { label: "License", val: "Spring '26" },
+                  { label: "License", val: "Passed '26" },
                   { label: "Degree", val: "UT '30" },
                 ].map((s) => (
                   <div key={s.label} className="text-center">
@@ -448,7 +449,7 @@ export default function Home() {
               every event, club, and campaign at my school. The common thread? I make things look and feel exactly right.
             </p>
             <div className="flex flex-wrap gap-3">
-              {["Published Author", "Salutatorian", "Yoga Instructor", "Graphic Designer", "AP Scholar", "Real Estate (in progress)"].map((tag) => (
+              {["Published Author", "Salutatorian", "Rosenthal Levy Scholar", "Yoga Instructor", "Graphic Designer", "AP Scholar", "Licensed Real Estate Agent"].map((tag) => (
                 <span
                   key={tag}
                   className="border border-pink-200 text-pink-500 text-xs font-medium px-4 py-2 rounded-full tracking-wide"
@@ -532,6 +533,263 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── BUILT / AI PRODUCTS ── */}
+      <section id="built" className="bg-pink-50 py-28 px-6 relative overflow-hidden">
+        {/* Decorative blob */}
+        <div
+          className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-30 pointer-events-none"
+          style={{ background: "radial-gradient(circle, #f9a8d4 0%, transparent 70%)" }}
+        />
+        <div
+          className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full opacity-30 pointer-events-none"
+          style={{ background: "radial-gradient(circle, #fbcfe8 0%, transparent 70%)" }}
+        />
+
+        <div className="max-w-7xl mx-auto relative">
+          <p className="text-xs tracking-[0.3em] uppercase text-pink-400 font-medium mb-6">Built</p>
+          <div className="grid md:grid-cols-2 gap-12 items-end mb-20">
+            <h2
+              className="text-5xl md:text-6xl font-bold text-black leading-[1.05]"
+              style={{ fontFamily: "var(--font-playfair)" }}
+            >
+              I don&apos;t just use AI.<br />
+              <span className="italic text-pink-400">I build with it.</span>
+            </h2>
+            <div>
+              <p className="text-gray-600 text-lg leading-relaxed mb-4">
+                Two live, in-production AI products — designed, coded, and shipped by me.
+              </p>
+              <p className="text-gray-500 text-base leading-relaxed">
+                One is a platform of named AI agents that run real businesses. The other is the course teaching anyone how to do the same.
+              </p>
+            </div>
+          </div>
+
+          {/* ── PRODUCT 1: AYLA INTELLIGENCE ── */}
+          <Reveal>
+            <div className="bg-white rounded-3xl overflow-hidden border border-pink-100 shadow-xl mb-10">
+              <div className="grid md:grid-cols-[1.1fr_1fr]">
+                {/* Left: mock dashboard */}
+                <div
+                  className="p-8 md:p-12 flex items-center justify-center relative overflow-hidden"
+                  style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #2d1b2d 50%, #4a2a4a 100%)" }}
+                >
+                  {/* Browser chrome */}
+                  <div className="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 border-b border-gray-200">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                      <span className="ml-3 text-[10px] text-gray-400 font-mono">ai.aylablumberg.com</span>
+                    </div>
+                    <div className="p-5 bg-gradient-to-b from-pink-50 to-white">
+                      <p className="text-[9px] text-pink-400 tracking-[0.2em] uppercase font-bold mb-2">Your Team</p>
+                      <p className="text-xs text-gray-500 mb-4">5 agents working right now</p>
+                      <div className="space-y-2.5">
+                        {[
+                          { name: "Elle", role: "Outreach lead", emoji: "💌", color: "bg-pink-100 text-pink-600" },
+                          { name: "Ryan", role: "Brand designer", emoji: "🎨", color: "bg-purple-100 text-purple-600" },
+                          { name: "Zeke", role: "Operations", emoji: "⚡", color: "bg-amber-100 text-amber-600" },
+                          { name: "Taylor", role: "Content creator", emoji: "✨", color: "bg-rose-100 text-rose-600" },
+                        ].map((a) => (
+                          <div key={a.name} className="flex items-center gap-3 bg-white rounded-lg p-2.5 border border-gray-100">
+                            <div className={`w-8 h-8 rounded-full ${a.color} flex items-center justify-center text-sm shrink-0`}>
+                              {a.emoji}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-black truncate">{a.name}</p>
+                              <p className="text-[10px] text-gray-400 truncate">{a.role}</p>
+                            </div>
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: copy */}
+                <div className="p-8 md:p-12 flex flex-col justify-center">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-xs font-bold tracking-widest uppercase text-pink-400">● Live · Product 01</span>
+                    <span className="text-xs text-gray-300">/</span>
+                    <span className="text-xs text-gray-400 font-mono">ai.aylablumberg.com</span>
+                  </div>
+                  <h3
+                    className="text-4xl md:text-5xl font-bold text-black mb-3 leading-[1.05]"
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    Ayla<br />
+                    <span className="italic text-pink-400">Intelligence.</span>
+                  </h3>
+                  <p
+                    className="text-pink-400 text-base font-medium mb-6 italic"
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    Your business, but with a team of AI agents.
+                  </p>
+                  <p className="text-gray-600 text-base leading-relaxed mb-4">
+                    A platform for small businesses to spin up <strong className="text-black">named, custom AI agents</strong> that actually do the work — handling cold outreach, designing brand assets, writing content, and running operations on autopilot.
+                  </p>
+                  <p className="text-gray-600 text-base leading-relaxed mb-6">
+                    Each agent has a personality, a job, and the context to do it well. It&apos;s the difference between &quot;using ChatGPT&quot; and &quot;hiring a team.&quot;
+                  </p>
+
+                  <div className="space-y-2.5 mb-8">
+                    {[
+                      "8+ named agents — outreach, content, design, ops",
+                      "Built on Next.js + Claude with custom proposal & email pipelines",
+                      "Designed for solopreneurs and small Dallas businesses",
+                    ].map((f) => (
+                      <div key={f} className="flex items-start gap-3 text-sm text-gray-600">
+                        <span className="w-1.5 h-1.5 rounded-full bg-pink-400 shrink-0 mt-2" />
+                        <span>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {["AI Agents", "Next.js", "Claude API", "Automation", "B2B"].map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] tracking-widest uppercase text-pink-500 border border-pink-200 px-3 py-1.5 rounded-full font-medium"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <a
+                    href="https://ai.aylablumberg.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center justify-between bg-black text-white px-6 py-4 rounded-full text-sm font-medium tracking-wide hover:bg-pink-400 transition-colors w-full sm:w-auto sm:min-w-[280px]"
+                  >
+                    <span>Visit Ayla Intelligence</span>
+                    <span className="text-pink-400 group-hover:text-white transition-colors">↗</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* ── PRODUCT 2: AYLA UNLOCKED ── */}
+          <Reveal delay={150}>
+            <div className="bg-white rounded-3xl overflow-hidden border border-pink-100 shadow-xl">
+              <div className="grid md:grid-cols-[1fr_1.1fr]">
+                {/* Left: copy */}
+                <div className="p-8 md:p-12 flex flex-col justify-center order-2 md:order-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-xs font-bold tracking-widest uppercase text-pink-400">● Live · Product 02</span>
+                    <span className="text-xs text-gray-300">/</span>
+                    <span className="text-xs text-gray-400 font-mono">unlocked.aylablumberg.com</span>
+                  </div>
+                  <h3
+                    className="text-4xl md:text-5xl font-bold text-black mb-3 leading-[1.05]"
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    Ayla<br />
+                    <span className="italic text-pink-400">Unlocked.</span>
+                  </h3>
+                  <p
+                    className="text-pink-400 text-base font-medium mb-6 italic"
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    The course on building with AI — taught by someone actually doing it.
+                  </p>
+                  <p className="text-gray-600 text-base leading-relaxed mb-4">
+                    A <strong className="text-black">paid course</strong> teaching exactly how I build, ship, and sell AI products as a solo creator — no fluff, no theory, just the playbook I use every day.
+                  </p>
+                  <p className="text-gray-600 text-base leading-relaxed mb-6">
+                    Auth, payments, members area, magic-link login — the entire platform was built from scratch with Next.js, Supabase, Stripe, and Resend. The course teaches you to build things just like it.
+                  </p>
+
+                  <div className="space-y-2.5 mb-8">
+                    {[
+                      "Real, in-production lessons from a working creator",
+                      "Members portal with Stripe checkout & magic-link auth",
+                      "Built in public — see exactly how it's made",
+                    ].map((f) => (
+                      <div key={f} className="flex items-start gap-3 text-sm text-gray-600">
+                        <span className="w-1.5 h-1.5 rounded-full bg-pink-400 shrink-0 mt-2" />
+                        <span>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {["Course", "AI Education", "Next.js", "Supabase", "Stripe"].map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] tracking-widest uppercase text-pink-500 border border-pink-200 px-3 py-1.5 rounded-full font-medium"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <a
+                    href="https://unlocked.aylablumberg.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center justify-between bg-black text-white px-6 py-4 rounded-full text-sm font-medium tracking-wide hover:bg-pink-400 transition-colors w-full sm:w-auto sm:min-w-[280px]"
+                  >
+                    <span>Visit Ayla Unlocked</span>
+                    <span className="text-pink-400 group-hover:text-white transition-colors">↗</span>
+                  </a>
+                </div>
+
+                {/* Right: mock course/lesson card */}
+                <div
+                  className="p-8 md:p-12 flex items-center justify-center relative overflow-hidden order-1 md:order-2"
+                  style={{ background: "linear-gradient(135deg, #fce7f3 0%, #fbcfe8 50%, #f9a8d4 100%)" }}
+                >
+                  <div className="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 border-b border-gray-200">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                      <span className="ml-3 text-[10px] text-gray-400 font-mono">unlocked.aylablumberg.com</span>
+                    </div>
+                    <div className="p-5 bg-white">
+                      {/* Hero "lesson" */}
+                      <div className="bg-gradient-to-br from-pink-400 to-pink-500 rounded-lg p-4 mb-4 text-white">
+                        <p className="text-[9px] tracking-[0.25em] uppercase font-bold opacity-80 mb-1">Module 01</p>
+                        <p
+                          className="text-base font-bold leading-tight mb-2"
+                          style={{ fontFamily: "var(--font-playfair)" }}
+                        >
+                          Ship your first<br />AI product.
+                        </p>
+                        <div className="flex items-center gap-2 text-[10px] opacity-90">
+                          <span>▶</span>
+                          <span>Watch · 24 min</span>
+                        </div>
+                      </div>
+                      {/* Lesson list */}
+                      <p className="text-[9px] text-gray-400 tracking-[0.2em] uppercase font-bold mb-2">Up Next</p>
+                      <div className="space-y-2">
+                        {[
+                          { num: "02", name: "Build with Claude API" },
+                          { num: "03", name: "Auth + Stripe in a weekend" },
+                          { num: "04", name: "Sell to your first customer" },
+                        ].map((l) => (
+                          <div key={l.num} className="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0">
+                            <span className="text-[10px] text-pink-400 font-bold tracking-widest w-5">{l.num}</span>
+                            <span className="text-xs text-gray-700 flex-1">{l.name}</span>
+                            <span className="text-[10px] text-gray-300">→</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ── TICKER ── */}
       <div className="bg-black overflow-hidden py-4 border-y border-zinc-800">
         <div className="animate-ticker">
@@ -575,9 +833,9 @@ export default function Home() {
                 className="border border-zinc-700 text-gray-300 px-5 py-2 rounded-full text-xs tracking-widest uppercase hover:border-pink-400 hover:text-pink-400 transition-colors">
                 Instagram · @aylablumberg ↗
               </a>
-              <a href="https://tiktok.com/@aylablumberg.realestate" target="_blank" rel="noopener noreferrer"
+              <a href="https://tiktok.com/@aylablumberg.ai" target="_blank" rel="noopener noreferrer"
                 className="border border-zinc-700 text-gray-300 px-5 py-2 rounded-full text-xs tracking-widest uppercase hover:border-pink-400 hover:text-pink-400 transition-colors">
-                TikTok · @aylablumberg.realestate ↗
+                TikTok · @aylablumberg.ai ↗
               </a>
             </div>
           </div>
@@ -682,8 +940,8 @@ export default function Home() {
               <p className="text-xs tracking-widest uppercase text-gray-300 font-medium pb-4 border-b border-gray-100 mb-6">Education</p>
               <div className="space-y-5 mb-12">
                 {[
-                  { name: "University of Texas", detail: "Civic Honors · Attending Fall 2026 · Austin, TX" },
-                  { name: "Texas Real Estate License", detail: "In Progress · Expected Spring 2026" },
+                  { name: "University of Texas", detail: "Rosenthal Levy Scholar · Full-Ride Scholarship · Attending Fall 2026 · Austin, TX" },
+                  { name: "Texas Real Estate License", detail: "Passed Exam · April 2026" },
                   { name: "Akiba Yavneh Academy", detail: "Salutatorian · AP Scholar with Distinction · May 2025" },
                 ].map((e) => (
                   <div key={e.name} className="pb-5 border-b border-gray-50 last:border-0">
@@ -746,7 +1004,7 @@ export default function Home() {
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 Instagram ↗
               </a>
-              <a href="https://tiktok.com/@aylablumberg.realestate" target="_blank" rel="noopener noreferrer"
+              <a href="https://tiktok.com/@aylablumberg.ai" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 border border-black text-black px-5 py-2.5 rounded-full text-xs font-medium tracking-widest uppercase hover:border-pink-400 hover:text-pink-400 transition-colors">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.37 6.37 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
                 TikTok ↗
