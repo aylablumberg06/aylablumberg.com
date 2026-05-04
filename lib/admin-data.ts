@@ -102,7 +102,7 @@ export type Idea = {
   next: string;
 };
 
-export type Agent = { name: string; role: string; telegram?: string };
+export type Agent = { name: string; role: string; telegram?: string; image?: string };
 
 export type Team = {
   name: string;

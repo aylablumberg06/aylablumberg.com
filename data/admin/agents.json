@@ -3,6 +3,7 @@
     "name": "Elle",
     "role": "Chief of staff — morning briefings, the only agent that messages Ayla directly across all of HSM",
     "telegram": "https://t.me/elle_ayla_bot",
+    "image": "https://upload.wikimedia.org/wikipedia/en/0/00/Elle_Woods.jpg",
     "docs": [
       { "label": "Elle character map", "url": "https://github.com/aylablumberg06/ayla-agents" }
     ]
@@ -14,15 +15,16 @@
       "orchestrator": {
         "name": "Troy",
         "role": "Competitive analysis · orchestrates the build pipeline",
-        "telegram": "https://t.me/troy_ayla_bot"
+        "telegram": "https://t.me/troy_ayla_bot",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Zac_Efron_at_the_Baywatch_Red_Carpet_Premiere_Sydney_Australia.jpg"
       },
       "members": [
-        { "name": "Gabriella", "role": "Error diagnosis · root cause analysis" },
-        { "name": "Sharpay", "role": "Aesthetic QA — rates sites 1-10" },
+        { "name": "Gabriella", "role": "Error diagnosis · root cause analysis", "image": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Vanessa_Hudgens_-_2019_by_Glenn_Francis.jpg" },
+        { "name": "Sharpay", "role": "Aesthetic QA — rates sites 1-10", "image": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Ashley_Tisdale_6%2C_2012.jpg" },
         { "name": "Ryan", "role": "SEO + content QA" },
-        { "name": "Taylor", "role": "Email QA — subject + personalization" },
+        { "name": "Taylor", "role": "Email QA — subject + personalization", "image": "https://upload.wikimedia.org/wikipedia/commons/4/49/Monique_Coleman_at_MultiCon_2025.jpg" },
         { "name": "Zeke", "role": "Brand director — brand briefs before build" },
-        { "name": "Chad", "role": "Deployment operations" }
+        { "name": "Chad", "role": "Deployment operations", "image": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Corbin_Bleu_at_MEGACON_2025_%28cropped%29.jpg" }
       ],
       "docs": [
         { "label": "HSM agent system", "url": "https://github.com/aylablumberg06/ayla-agents" },
@@ -35,10 +37,11 @@
       "orchestrator": {
         "name": "Agent P",
         "role": "Scout + orchestrator — surfaces leads, hands off to the team",
-        "telegram": "https://t.me/agentp_ayla_bot"
+        "telegram": "https://t.me/agentp_ayla_bot",
+        "image": "https://upload.wikimedia.org/wikipedia/en/d/dc/Perry_the_Platypus.png"
       },
       "members": [
-        { "name": "Phineas", "role": "Coordinator — only agent that messages Ayla in this universe" },
+        { "name": "Phineas", "role": "Coordinator — only agent that messages Ayla in this universe", "image": "https://upload.wikimedia.org/wikipedia/en/5/52/Phineas_Flynn.png" },
         { "name": "Baljeet", "role": "Researcher — deep client + market dives" },
         { "name": "Ferb", "role": "Builder — assembles proposals" },
         { "name": "Isabella", "role": "Designer — proposal aesthetics" },
@@ -55,12 +58,13 @@
       "orchestrator": {
         "name": "Sylvie",
         "role": "The boss — runs everything, final approval on all client work",
-        "telegram": "https://t.me/sylvie_emma_bot"
+        "telegram": "https://t.me/sylvie_emma_bot",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Philippine-Leroy-Beaulieu%2C_2011_%28cropped%29.jpg"
       },
       "members": [
         { "name": "Julien", "role": "Lead research — accounts, detail-oriented" },
         { "name": "Luc", "role": "Content preview — creative, laid back but sharp" },
-        { "name": "Emily", "role": "Outreach — charming, American energy" }
+        { "name": "Emily", "role": "Outreach — charming, American energy", "image": "https://upload.wikimedia.org/wikipedia/commons/9/99/Lily_Collins_May_2019.jpg" }
       ],
       "docs": [
         { "label": "Character map (TBD)", "url": "#" },
