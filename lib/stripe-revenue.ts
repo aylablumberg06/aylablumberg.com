@@ -4,6 +4,7 @@ type Charge = {
   status: string;
   amount: number;
   amount_refunded: number;
+  created: number;
   balance_transaction?: { fee?: number } | string | null;
 };
 
@@ -12,8 +13,10 @@ type ChargeList = {
   has_more: boolean;
 };
 
+export type DailyPoint = { date: string; cents: number };
+
 export type CourseRevenue =
-  | { source: "live"; netCents: number; grossCents: number; feesCents: number; customers: number }
+  | { source: "live"; netCents: number; grossCents: number; feesCents: number; customers: number; daily: DailyPoint[] }
   | { source: "fallback"; reason: string };
 
 let cache: { at: number; value: CourseRevenue } | null = null;
@@ -31,6 +34,14 @@ export async function getCourseRevenue(): Promise<CourseRevenue> {
   let fees = 0;
   let customers = 0;
   let starting_after: string | undefined;
+  const dailyMap = new Map<string, number>();
+  const today = new Date();
+  // Seed last 30 days with zeros so sparkline always has shape
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setUTCDate(d.getUTCDate() - i);
+    dailyMap.set(d.toISOString().slice(0, 10), 0);
+  }
 
   try {
     for (let page = 0; page < 3; page++) {
@@ -62,6 +73,10 @@ export async function getCourseRevenue(): Promise<CourseRevenue> {
         if (bt && typeof bt === "object" && "fee" in bt) {
           fees += bt.fee || 0;
         }
+        if (c.created) {
+          const day = new Date(c.created * 1000).toISOString().slice(0, 10);
+          if (dailyMap.has(day)) dailyMap.set(day, (dailyMap.get(day) || 0) + net);
+        }
       }
 
       if (!list.has_more) break;
@@ -69,12 +84,17 @@ export async function getCourseRevenue(): Promise<CourseRevenue> {
       if (!starting_after) break;
     }
 
+    const daily: DailyPoint[] = Array.from(dailyMap.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, cents]) => ({ date, cents }));
+
     const value: CourseRevenue = {
       source: "live",
       netCents: gross - fees,
       grossCents: gross,
       feesCents: fees,
       customers,
+      daily,
     };
     cache = { at: Date.now(), value };
     return value;

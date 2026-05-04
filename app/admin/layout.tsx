@@ -3,6 +3,9 @@ import { AdminNav } from "./_components/AdminNav";
 import { TickerOrEmpty } from "./_components/TickerOrEmpty";
 import { ScrollProgress } from "./_components/ScrollProgress";
 import { BackToTop } from "./_components/BackToTop";
+import { KonamiCode } from "./_components/KonamiCode";
+import { StickyTOC } from "./_components/StickyTOC";
+import { CommandPalette } from "./_components/CommandPalette";
 
 export const metadata: Metadata = {
   title: "Master Dashboard · Ayla Blumberg",
@@ -18,8 +21,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <ScrollProgress />
       <TickerOrEmpty text={TICKER.repeat(8)} />
       <AdminNav />
+      <StickyTOC />
       {children}
       <BackToTop />
+      <CommandPalette />
+      <KonamiCode />
     </div>
   );
 }

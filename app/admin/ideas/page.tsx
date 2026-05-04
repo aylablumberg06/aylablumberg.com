@@ -1,4 +1,6 @@
 import { getIdeas } from "@/lib/admin-data";
+import { QuickAdd } from "../_components/QuickAdd";
+import { StarToggle } from "../_components/StarToggle";
 
 export default async function IdeasPage() {
   const ideas = await getIdeas();
@@ -55,7 +57,10 @@ export default async function IdeasPage() {
                     Idea
                   </span>
                 </div>
-                <div className="p-7">
+                <div className="p-7 relative">
+                  <div className="absolute top-5 right-5">
+                    <StarToggle id={`idea-${idea.title}`} />
+                  </div>
                   <p className="text-[10px] tracking-[0.3em] uppercase text-pink-400 font-semibold mb-2">
                     Builds on · {idea.buildsOn}
                   </p>
@@ -87,9 +92,17 @@ export default async function IdeasPage() {
             </article>
           ))}
 
-          <p className="text-center text-xs text-gray-400 italic mt-12"
+          <div className="mt-10">
+            <QuickAdd
+              storageKey="ideas"
+              label="Idea"
+              placeholder="A new idea — what does it build on?"
+            />
+          </div>
+
+          <p className="text-center text-xs text-gray-400 italic mt-10"
             style={{ fontFamily: "var(--font-playfair)" }}>
-            Add or edit ideas in <span className="text-pink-400">data/admin/ideas.json</span>
+            Quick adds save to your browser. Move winners into <span className="text-pink-400">data/admin/ideas.json</span>.
           </p>
         </div>
       </section>

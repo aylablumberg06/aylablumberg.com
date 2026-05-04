@@ -11,6 +11,14 @@ import { RevenueWidget } from "./_components/RevenueWidget";
 import { NotesScratchpad } from "./_components/NotesScratchpad";
 import { DomainHealth } from "./_components/DomainHealth";
 import { Reveal } from "./_components/Reveal";
+import { Sparkles } from "./_components/Sparkles";
+import { CardTilt } from "./_components/CardTilt";
+import { ConfettiOnMount } from "./_components/ConfettiOnMount";
+import { ElleBriefing } from "./_components/ElleBriefing";
+import { RevenueSparkline } from "./_components/RevenueSparkline";
+import { CommitsFeed } from "./_components/CommitsFeed";
+import { QuickAdd } from "./_components/QuickAdd";
+import { StarToggle } from "./_components/StarToggle";
 import Link from "next/link";
 
 const STATUS_STYLES: Record<string, string> = {
@@ -58,10 +66,14 @@ export default async function AdminHome() {
     weekday: "long", month: "long", day: "numeric",
   });
 
+  const paidTotal = revenue.paid.reduce((s, p) => s + p.amount, 0);
+
   return (
     <main>
+      <ConfettiOnMount totalPaid={paidTotal} />
       {/* ── HERO ARCH ────────────────────────────────────────── */}
       <section
+        id="hero"
         className="relative overflow-hidden px-6 pt-16 pb-24"
         style={{
           background: "#fdf2f8",
@@ -69,6 +81,7 @@ export default async function AdminHome() {
           backgroundSize: "22px 22px",
         }}
       >
+        <Sparkles />
         {/* Decorative blobs */}
         <div
           className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-40 pointer-events-none"
@@ -107,22 +120,23 @@ export default async function AdminHome() {
                   key={f.key}
                   className="relative"
                   style={{
-                    transform: middle ? "translateY(-32px)" : "translateY(0)",
+                    marginTop: middle ? -32 : 0,
                   }}
                 >
                   {/* Sparkles around the middle arch */}
                   {middle && (
                     <>
-                      <span className="absolute -top-8 left-4 text-pink-300 text-2xl pointer-events-none"
+                      <span className="absolute -top-8 left-4 text-pink-300 text-2xl pointer-events-none z-10"
                         style={{ animation: "sparkle 3.5s ease-in-out 0.4s infinite" }}>✦</span>
-                      <span className="absolute -top-12 right-8 text-yellow-300 text-xl pointer-events-none"
+                      <span className="absolute -top-12 right-8 text-yellow-300 text-xl pointer-events-none z-10"
                         style={{ animation: "sparkle 3.5s ease-in-out 0.9s infinite" }}>✦</span>
-                      <span className="absolute -top-4 right-2 text-pink-400 text-lg pointer-events-none"
+                      <span className="absolute -top-4 right-2 text-pink-400 text-lg pointer-events-none z-10"
                         style={{ animation: "sparkle 3.5s ease-in-out 1.4s infinite" }}>✦</span>
                     </>
                   )}
 
-                  <div
+                  <CardTilt
+                    max={6}
                     className="bg-white border border-pink-100 shadow-2xl overflow-hidden h-full"
                     style={{
                       borderTopLeftRadius: "200px",
@@ -191,13 +205,16 @@ export default async function AdminHome() {
                         )}
                       </div>
                     </div>
-                  </div>
+                  </CardTilt>
                 </div>
               );
             })}
           </div>
         </div>
       </section>
+
+      {/* ── ELLE BRIEFING ───────────────────────────────────── */}
+      <ElleBriefing />
 
       {/* ── QUICK LAUNCH BAR ────────────────────────────────── */}
       <section className="bg-black px-6 py-6 border-y border-zinc-800">
@@ -220,7 +237,7 @@ export default async function AdminHome() {
       </section>
 
       {/* ── REVENUE ─────────────────────────────────────────── */}
-      <section className="bg-white py-24 px-6">
+      <section id="money" className="bg-white py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs tracking-[0.3em] uppercase text-pink-400 font-medium mb-4">Money</p>
           <h2
@@ -234,7 +251,7 @@ export default async function AdminHome() {
       </section>
 
       {/* ── ACTIVE JOBS ─────────────────────────────────────── */}
-      <section className="bg-pink-50 py-24 px-6">
+      <section id="jobs" className="bg-pink-50 py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs tracking-[0.3em] uppercase text-pink-400 font-medium mb-4">In Flight</p>
           <h2
@@ -254,7 +271,10 @@ export default async function AdminHome() {
                   <span className="opacity-80">{j.priority}</span>
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
-                  <p className="text-xs text-gray-400 tracking-widest uppercase mb-2">{j.client} · {j.team}</p>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs text-gray-500 tracking-widest uppercase">{j.client} · {j.team}</p>
+                    <StarToggle id={`job-${j.title}`} />
+                  </div>
                   <h3
                     className="text-xl font-bold text-black mb-4 leading-tight"
                     style={{ fontFamily: "var(--font-playfair)" }}
@@ -264,17 +284,26 @@ export default async function AdminHome() {
                   <div className="border-t border-pink-50 pt-4 mt-auto">
                     <p className="text-[11px] tracking-[0.18em] uppercase text-pink-400 font-semibold mb-1">Next</p>
                     <p className="text-sm text-gray-600 leading-relaxed mb-3">{j.next}</p>
-                    <p className="text-[11px] tracking-[0.18em] uppercase text-gray-400">Due · {j.due}</p>
+                    <p className="text-[11px] tracking-[0.18em] uppercase text-gray-500">Due · {j.due}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Quick add a job draft */}
+          <div className="mt-8 max-w-2xl mx-auto">
+            <QuickAdd
+              storageKey="jobs"
+              label="Job"
+              placeholder="New thing to ship — describe it…"
+            />
+          </div>
         </div>
       </section>
 
       {/* ── OTHER DASHBOARDS ────────────────────────────────── */}
-      <section className="bg-white py-24 px-6">
+      <section id="subdash" className="bg-white py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs tracking-[0.3em] uppercase text-pink-400 font-medium mb-4">Sub-Dashboards</p>
           <h2
@@ -323,7 +352,7 @@ export default async function AdminHome() {
       </section>
 
       {/* ── ALL OTHER PROJECTS ──────────────────────────────── */}
-      <section className="bg-pink-50 py-24 px-6">
+      <section id="projects" className="bg-pink-50 py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs tracking-[0.3em] uppercase text-pink-400 font-medium mb-4">Everything Else</p>
           <h2
@@ -378,7 +407,7 @@ export default async function AdminHome() {
       </section>
 
       {/* ── EXTRAS GRID ─────────────────────────────────────── */}
-      <section className="bg-white py-24 px-6">
+      <section id="pulse" className="bg-white py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs tracking-[0.3em] uppercase text-pink-400 font-medium mb-4">Pulse</p>
           <h2
@@ -387,7 +416,15 @@ export default async function AdminHome() {
           >
             What&apos;s <span className="italic text-pink-400">happening.</span>
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Course revenue sparkline */}
+            {courseRevenue.source === "live" && (
+              <RevenueSparkline daily={courseRevenue.daily} />
+            )}
+
+            {/* Recent commits */}
+            <CommitsFeed />
+
             {/* TikTok metrics */}
             <a
               href="https://tiktok.com/@aylablumberg.ai"
@@ -461,7 +498,7 @@ export default async function AdminHome() {
       </section>
 
       {/* ── NOTES ───────────────────────────────────────────── */}
-      <section className="bg-pink-50 py-24 px-6">
+      <section id="notes" className="bg-pink-50 py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <p className="text-xs tracking-[0.3em] uppercase text-pink-400 font-medium mb-4">For Your Eyes Only</p>
           <h2
