@@ -20,8 +20,8 @@ export function AdminNav() {
 
   return (
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-y-3 gap-x-6">
-        <Link href="/admin" className="flex items-center gap-2.5 shrink-0">
+      <div className="max-w-7xl mx-auto px-6 py-4 grid grid-cols-[1fr_auto_1fr] items-center gap-x-6 gap-y-3">
+        <Link href="/admin" className="flex items-center gap-2.5 shrink-0 justify-self-start">
           <div
             className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center shadow-sm"
             style={{ fontFamily: "var(--font-playfair)" }}
@@ -55,7 +55,7 @@ export function AdminNav() {
           })}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 justify-self-end">
           <Link
             href="/"
             className="hidden sm:inline text-xs tracking-widest uppercase text-gray-400 hover:text-pink-400 transition-colors"
