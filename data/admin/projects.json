@@ -1,0 +1,74 @@
+[
+  {
+    "id": "AY-N4",
+    "name": "No.1 Courier",
+    "purpose": "Client site — Chris's courier service",
+    "live": "https://no1courier.com",
+    "github": "https://github.com/aylablumberg06/no1courier",
+    "vercel": "https://vercel.com/aylablumberg06/no1courier",
+    "status": "shipped"
+  },
+  {
+    "id": "AY-N5",
+    "name": "Design List Collective",
+    "purpose": "Design directory — Sharon's project",
+    "live": "https://designlistcollective.com",
+    "github": null,
+    "vercel": null,
+    "status": "handed off"
+  },
+  {
+    "id": "AY-N6",
+    "name": "StyleAI",
+    "purpose": "AI styling app — early stage",
+    "live": null,
+    "github": null,
+    "vercel": null,
+    "status": "dormant"
+  },
+  {
+    "id": "AY-N7",
+    "name": "Ninety Five Media",
+    "purpose": "Emma Tessler's agency · Emily in Paris team build + proposal",
+    "live": "https://ai.aylablumberg.com/ninety-five-media/",
+    "github": null,
+    "vercel": "https://vercel.com/aylablumberg06/ninetyfivemedia",
+    "status": "in progress"
+  },
+  {
+    "id": "AY-N8",
+    "name": "Remotion Videos",
+    "purpose": "Programmatic video generation",
+    "live": null,
+    "github": null,
+    "vercel": null,
+    "status": "dormant"
+  },
+  {
+    "id": "AY-N9",
+    "name": "Ayla Showcase",
+    "purpose": "TikTok b-roll grid of all projects",
+    "live": "https://ayla-showcase.vercel.app",
+    "github": null,
+    "vercel": "https://vercel.com/aylablumberg06/ayla-showcase",
+    "status": "live"
+  },
+  {
+    "id": "AY-P3",
+    "name": "Website-bot (Ayla Edit pipeline)",
+    "purpose": "HSM cold-outreach + auto site generator (mac-mini)",
+    "live": "https://sites.aylablumberg.com",
+    "github": "https://github.com/marcblumberg73-ops/website-bot",
+    "vercel": "https://vercel.com/aylablumberg06/ayla-sites",
+    "status": "running"
+  },
+  {
+    "id": "AY-P2",
+    "name": "Elle Brain",
+    "purpose": "Elle webhook + Telegram backend",
+    "live": null,
+    "github": null,
+    "vercel": "https://vercel.com/aylablumberg06/elle-brain-webhook",
+    "status": "running"
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Ayla Intelligence Admin",
+    "purpose": "Proposals · contracts · pipeline · client research",
+    "url": "https://ai.aylablumberg.com/admin",
+    "owns": ["proposals", "contracts", "client research"],
+    "live": true
+  },
+  {
+    "name": "Ayla Unlocked Admin",
+    "purpose": "Course members · Stripe · email magic links",
+    "url": "https://unlocked.aylablumberg.com/admin",
+    "owns": ["course revenue", "members", "lessons"],
+    "live": true
+  },
+  {
+    "name": "Ayla Cost Dashboard",
+    "purpose": "API spend across all projects",
+    "url": "https://ayla-cost-dashboard.vercel.app",
+    "owns": ["Anthropic spend", "infra spend"],
+    "live": true
+  },
+  {
+    "name": "Ayla Showcase",
+    "purpose": "Live thumbnail grid for TikTok b-roll",
+    "url": "https://ayla-showcase.vercel.app",
+    "owns": ["b-roll"],
+    "live": true
+  }
+]

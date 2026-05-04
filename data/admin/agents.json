@@ -1,0 +1,71 @@
+{
+  "topLevel": {
+    "name": "Elle",
+    "role": "Chief of staff — morning briefings, the only agent that messages Ayla directly across all of HSM",
+    "telegram": "https://t.me/elle_ayla_bot",
+    "docs": [
+      { "label": "Elle character map", "url": "https://github.com/aylablumberg06/ayla-agents" }
+    ]
+  },
+  "teams": [
+    {
+      "name": "High School Musical",
+      "tagline": "The Ayla Edit pipeline — cold outreach + auto site generation",
+      "orchestrator": {
+        "name": "Troy",
+        "role": "Competitive analysis · orchestrates the build pipeline",
+        "telegram": "https://t.me/troy_ayla_bot"
+      },
+      "members": [
+        { "name": "Gabriella", "role": "Error diagnosis · root cause analysis" },
+        { "name": "Sharpay", "role": "Aesthetic QA — rates sites 1-10" },
+        { "name": "Ryan", "role": "SEO + content QA" },
+        { "name": "Taylor", "role": "Email QA — subject + personalization" },
+        { "name": "Zeke", "role": "Brand director — brand briefs before build" },
+        { "name": "Chad", "role": "Deployment operations" }
+      ],
+      "docs": [
+        { "label": "HSM agent system", "url": "https://github.com/aylablumberg06/ayla-agents" },
+        { "label": "Website-bot pipeline", "url": "https://github.com/marcblumberg73-ops/website-bot" }
+      ]
+    },
+    {
+      "name": "Phineas & Ferb",
+      "tagline": "Ayla Intelligence — premium B2B proposal factory",
+      "orchestrator": {
+        "name": "Agent P",
+        "role": "Scout + orchestrator — surfaces leads, hands off to the team",
+        "telegram": "https://t.me/agentp_ayla_bot"
+      },
+      "members": [
+        { "name": "Phineas", "role": "Coordinator — only agent that messages Ayla in this universe" },
+        { "name": "Baljeet", "role": "Researcher — deep client + market dives" },
+        { "name": "Ferb", "role": "Builder — assembles proposals" },
+        { "name": "Isabella", "role": "Designer — proposal aesthetics" },
+        { "name": "Candace", "role": "Outreach — sends + follows up" }
+      ],
+      "docs": [
+        { "label": "Phineas & Ferb workspace", "url": "https://github.com/aylablumberg06/ayla-intelligence" },
+        { "label": "Live proposals", "url": "https://ai.aylablumberg.com/admin" }
+      ]
+    },
+    {
+      "name": "Emily in Paris",
+      "tagline": "Ninety Five Media (Emma Tessler) — being built now",
+      "orchestrator": {
+        "name": "Sylvie",
+        "role": "The boss — runs everything, final approval on all client work",
+        "telegram": "https://t.me/sylvie_emma_bot"
+      },
+      "members": [
+        { "name": "Julien", "role": "Lead research — accounts, detail-oriented" },
+        { "name": "Luc", "role": "Content preview — creative, laid back but sharp" },
+        { "name": "Emily", "role": "Outreach — charming, American energy" }
+      ],
+      "docs": [
+        { "label": "Character map (TBD)", "url": "#" },
+        { "label": "Build notes (TBD)", "url": "#" }
+      ]
+    }
+  ]
+}

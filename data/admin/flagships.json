@@ -1,0 +1,32 @@
+[
+  {
+    "key": "personal",
+    "name": "Ayla Blumberg",
+    "tagline": "The personal site",
+    "subtitle": "Creative · Real Estate · Dallas, TX",
+    "live": "https://aylablumberg.com",
+    "dashboard": "/admin",
+    "stat": { "label": "Status", "value": "Live" },
+    "accent": "rose"
+  },
+  {
+    "key": "ai",
+    "name": "Ayla Intelligence",
+    "tagline": "Your business, but with a team of AI agents",
+    "subtitle": "Premium B2B AI consulting · Phineas & Ferb crew",
+    "live": "https://ai.aylablumberg.com",
+    "dashboard": "https://ai.aylablumberg.com/admin",
+    "stat": { "label": "Proposals", "value": "Live" },
+    "accent": "pink"
+  },
+  {
+    "key": "unlocked",
+    "name": "Ayla Unlocked",
+    "tagline": "The course on building with AI",
+    "subtitle": "Members portal · Stripe · Magic-link auth",
+    "live": "https://unlocked.aylablumberg.com",
+    "dashboard": "https://unlocked.aylablumberg.com/admin",
+    "stat": { "label": "Course", "value": "Selling" },
+    "accent": "fuchsia"
+  }
+]

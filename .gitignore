@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# admin sensitive data — public repo, source these from Vercel env in prod
+/data/admin/revenue.json
+/data/admin/jobs.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

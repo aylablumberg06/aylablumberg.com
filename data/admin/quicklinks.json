@@ -1,0 +1,10 @@
+[
+  { "name": "Stripe", "url": "https://dashboard.stripe.com", "color": "indigo" },
+  { "name": "Vercel", "url": "https://vercel.com/aylablumberg06", "color": "black" },
+  { "name": "GitHub", "url": "https://github.com/aylablumberg06", "color": "zinc" },
+  { "name": "Gmail Drafts", "url": "https://mail.google.com/mail/u/0/#drafts", "color": "rose" },
+  { "name": "Resend", "url": "https://resend.com/emails", "color": "amber" },
+  { "name": "Supabase", "url": "https://supabase.com/dashboard/projects", "color": "emerald" },
+  { "name": "Anthropic Console", "url": "https://console.anthropic.com", "color": "orange" },
+  { "name": "Domains", "url": "https://vercel.com/aylablumberg06/~/domains", "color": "pink" }
+]

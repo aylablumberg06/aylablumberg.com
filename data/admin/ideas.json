@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Realtor cohort of Ayla Unlocked",
+    "buildsOn": "Ayla Unlocked",
+    "why": "Same platform, new audience — realtors will pay for AI follow-up workflows",
+    "next": "Outline 4 modules + record intro TikTok"
+  },
+  {
+    "title": "Behind-the-scenes TikTok series: 'Building Emma's Team'",
+    "buildsOn": "Ayla Intelligence + Ayla Unlocked",
+    "why": "Content sells the course AND proves out the consulting offer",
+    "next": "Film today's session — Sylvie spinning up"
+  },
+  {
+    "title": "Auto-generated proposal from a 15-min discovery call transcript",
+    "buildsOn": "Ayla Intelligence",
+    "why": "Cuts proposal turnaround from 2 days to 20 minutes",
+    "next": "Wire Whisper → Claude proposal generator into Phineas pipeline"
+  },
+  {
+    "title": "Realtor lead-capture chatbot template",
+    "buildsOn": "Ayla Intelligence",
+    "why": "Productize the realtor offer — sell to UT-area agents while at school",
+    "next": "Mock up landing page on ai.aylablumberg.com/realtors"
+  },
+  {
+    "title": "Client portal for HSM-generated sites",
+    "buildsOn": "Website-bot (Ayla Edit)",
+    "why": "Convert free demo sites to paid — give client a login to edit their own",
+    "next": "Auth gate the existing Vercel deployments"
+  }
+]
