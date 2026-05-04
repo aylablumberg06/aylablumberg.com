@@ -136,7 +136,7 @@ export default async function AdminHome() {
                   )}
 
                   <CardTilt
-                    max={6}
+                    max={14}
                     className="bg-white border border-pink-100 shadow-2xl overflow-hidden h-full"
                     style={{
                       borderTopLeftRadius: "200px",
