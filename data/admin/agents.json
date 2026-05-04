@@ -21,7 +21,7 @@
       "members": [
         { "name": "Gabriella", "role": "Error diagnosis · root cause analysis", "image": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Vanessa_Hudgens_-_2019_by_Glenn_Francis.jpg" },
         { "name": "Sharpay", "role": "Aesthetic QA — rates sites 1-10", "image": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Ashley_Tisdale_6%2C_2012.jpg" },
-        { "name": "Ryan", "role": "SEO + content QA" },
+        { "name": "Ryan", "role": "SEO + content QA", "image": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Lucas_Grabeel_MEGACON_2025_-_5_%28cropped%29.jpg" },
         { "name": "Taylor", "role": "Email QA — subject + personalization", "image": "https://upload.wikimedia.org/wikipedia/commons/4/49/Monique_Coleman_at_MultiCon_2025.jpg" },
         { "name": "Zeke", "role": "Brand director — brand briefs before build" },
         { "name": "Chad", "role": "Deployment operations", "image": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Corbin_Bleu_at_MEGACON_2025_%28cropped%29.jpg" }
@@ -42,10 +42,10 @@
       },
       "members": [
         { "name": "Phineas", "role": "Coordinator — only agent that messages Ayla in this universe", "image": "https://upload.wikimedia.org/wikipedia/en/5/52/Phineas_Flynn.png" },
-        { "name": "Baljeet", "role": "Researcher — deep client + market dives" },
-        { "name": "Ferb", "role": "Builder — assembles proposals" },
-        { "name": "Isabella", "role": "Designer — proposal aesthetics" },
-        { "name": "Candace", "role": "Outreach — sends + follows up" }
+        { "name": "Baljeet", "role": "Researcher — deep client + market dives", "image": "https://static.wikia.nocookie.net/disney/images/4/41/BaljeetFull.JPG/revision/latest/scale-to-width-down/455?cb=20190722154112" },
+        { "name": "Ferb", "role": "Builder — assembles proposals", "image": "https://static.wikia.nocookie.net/disney/images/a/a5/Profile_-_Ferb_Flecher.png/revision/latest?cb=20241218102240" },
+        { "name": "Isabella", "role": "Designer — proposal aesthetics", "image": "https://static.wikia.nocookie.net/disney/images/9/98/IsabellaFull.JPG/revision/latest/scale-to-width-down/507?cb=20251028195009" },
+        { "name": "Candace", "role": "Outreach — sends + follows up", "image": "https://static.wikia.nocookie.net/disney/images/1/18/Profile_-_Candace_Flynn.png/revision/latest/scale-to-width-down/450?cb=20250618223303" }
       ],
       "docs": [
         { "label": "Phineas & Ferb workspace", "url": "https://github.com/aylablumberg06/ayla-intelligence" },
@@ -63,7 +63,7 @@
       },
       "members": [
         { "name": "Julien", "role": "Lead research — accounts, detail-oriented" },
-        { "name": "Luc", "role": "Content preview — creative, laid back but sharp" },
+        { "name": "Luc", "role": "Content preview — creative, laid back but sharp", "image": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Bruno_Gouery.webp" },
         { "name": "Emily", "role": "Outreach — charming, American energy", "image": "https://upload.wikimedia.org/wikipedia/commons/9/99/Lily_Collins_May_2019.jpg" }
       ],
       "docs": [
