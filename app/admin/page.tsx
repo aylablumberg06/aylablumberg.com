@@ -10,6 +10,7 @@ import { getCourseRevenue } from "@/lib/stripe-revenue";
 import { RevenueWidget } from "./_components/RevenueWidget";
 import { NotesScratchpad } from "./_components/NotesScratchpad";
 import { DomainHealth } from "./_components/DomainHealth";
+import { Reveal } from "./_components/Reveal";
 import Link from "next/link";
 
 const STATUS_STYLES: Record<string, string> = {
@@ -210,7 +211,7 @@ export default async function AdminHome() {
               href={q.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-zinc-700 text-gray-300 px-4 py-2 rounded-full text-[10px] tracking-widest uppercase hover:border-pink-400 hover:text-pink-400 transition-colors"
+              className="border border-zinc-700 text-gray-300 px-4 py-2 rounded-full text-[11px] tracking-[0.18em] uppercase hover:border-pink-400 hover:text-pink-400 transition-colors"
             >
               {q.name} ↗
             </a>
@@ -246,7 +247,7 @@ export default async function AdminHome() {
             {jobs.map(j => (
               <div
                 key={j.title}
-                className="bg-white rounded-3xl overflow-hidden border border-pink-100 shadow-sm hover:shadow-md transition-shadow flex flex-col"
+                className="bg-white rounded-3xl overflow-hidden border border-pink-100 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-pink-200 transition-all duration-300 flex flex-col"
               >
                 <div className={`px-5 py-2.5 flex justify-between items-center text-[10px] font-bold tracking-[0.25em] uppercase ${STATUS_STYLES[j.status] || "bg-gray-100 text-gray-500"}`}>
                   <span>● {j.status}</span>
@@ -261,9 +262,9 @@ export default async function AdminHome() {
                     {j.title}
                   </h3>
                   <div className="border-t border-pink-50 pt-4 mt-auto">
-                    <p className="text-[10px] tracking-widest uppercase text-pink-400 font-semibold mb-1">Next</p>
+                    <p className="text-[11px] tracking-[0.18em] uppercase text-pink-400 font-semibold mb-1">Next</p>
                     <p className="text-sm text-gray-600 leading-relaxed mb-3">{j.next}</p>
-                    <p className="text-[10px] tracking-widest uppercase text-gray-400">Due · {j.due}</p>
+                    <p className="text-[11px] tracking-[0.18em] uppercase text-gray-400">Due · {j.due}</p>
                   </div>
                 </div>
               </div>
@@ -309,7 +310,7 @@ export default async function AdminHome() {
                   {d.owns.map(tag => (
                     <span
                       key={tag}
-                      className="text-[10px] tracking-widest uppercase text-pink-500 border border-pink-200 px-3 py-1 rounded-full font-medium"
+                      className="text-[11px] tracking-[0.18em] uppercase text-pink-500 border border-pink-200 px-3 py-1 rounded-full font-medium"
                     >
                       {tag}
                     </span>
@@ -335,11 +336,11 @@ export default async function AdminHome() {
             {projects.map(p => (
               <div
                 key={p.id}
-                className="bg-white rounded-3xl border border-pink-100 p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col"
+                className="bg-white rounded-3xl border border-pink-100 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-pink-200 transition-all duration-300 flex flex-col"
               >
                 <div className="flex justify-between items-baseline mb-2">
-                  <span className="text-[10px] tracking-widest uppercase text-gray-300 font-mono">{p.id}</span>
-                  <span className={`text-[10px] tracking-widest uppercase font-semibold px-2.5 py-1 rounded-full ${PROJECT_STATUS_STYLES[p.status] || "text-gray-400 bg-gray-50"}`}>
+                  <span className="text-[11px] tracking-[0.18em] uppercase text-gray-300 font-mono">{p.id}</span>
+                  <span className={`text-[11px] tracking-[0.18em] uppercase font-semibold px-2.5 py-1 rounded-full ${PROJECT_STATUS_STYLES[p.status] || "text-gray-400 bg-gray-50"}`}>
                     {p.status}
                   </span>
                 </div>
@@ -353,19 +354,19 @@ export default async function AdminHome() {
                 <div className="flex flex-wrap gap-2">
                   {p.live && (
                     <a href={p.live} target="_blank" rel="noopener noreferrer"
-                      className="text-[10px] tracking-widest uppercase border border-pink-300 text-pink-500 px-3 py-1.5 rounded-full hover:bg-pink-400 hover:text-white hover:border-pink-400 transition-colors">
+                      className="text-[11px] tracking-[0.18em] uppercase border border-pink-300 text-pink-500 px-3 py-1.5 rounded-full hover:bg-pink-400 hover:text-white hover:border-pink-400 transition-colors">
                       Live ↗
                     </a>
                   )}
                   {p.github && (
                     <a href={p.github} target="_blank" rel="noopener noreferrer"
-                      className="text-[10px] tracking-widest uppercase border border-gray-200 text-gray-500 px-3 py-1.5 rounded-full hover:border-black hover:text-black transition-colors">
+                      className="text-[11px] tracking-[0.18em] uppercase border border-gray-200 text-gray-500 px-3 py-1.5 rounded-full hover:border-black hover:text-black transition-colors">
                       GitHub ↗
                     </a>
                   )}
                   {p.vercel && (
                     <a href={p.vercel} target="_blank" rel="noopener noreferrer"
-                      className="text-[10px] tracking-widest uppercase border border-gray-200 text-gray-500 px-3 py-1.5 rounded-full hover:border-black hover:text-black transition-colors">
+                      className="text-[11px] tracking-[0.18em] uppercase border border-gray-200 text-gray-500 px-3 py-1.5 rounded-full hover:border-black hover:text-black transition-colors">
                       Vercel ↗
                     </a>
                   )}
@@ -406,7 +407,7 @@ export default async function AdminHome() {
                   >
                     7K+
                   </p>
-                  <p className="text-[10px] tracking-widest uppercase text-gray-400">Followers</p>
+                  <p className="text-[11px] tracking-[0.18em] uppercase text-gray-400">Followers</p>
                 </div>
                 <div>
                   <p
@@ -415,7 +416,7 @@ export default async function AdminHome() {
                   >
                     6M+
                   </p>
-                  <p className="text-[10px] tracking-widest uppercase text-gray-400">Total Views</p>
+                  <p className="text-[11px] tracking-[0.18em] uppercase text-gray-400">Total Views</p>
                 </div>
                 <div className="col-span-2 pt-3 border-t border-gray-100">
                   <p className="text-xs text-gray-500 italic"
@@ -447,7 +448,7 @@ export default async function AdminHome() {
                 <p className="text-sm text-gray-500 leading-relaxed mb-4">
                   Live API + infra spend across every project. Keep an eye on Elle and the HSM pipeline — they burn the most.
                 </p>
-                <span className="text-[10px] tracking-widest uppercase text-pink-400 font-semibold">
+                <span className="text-[11px] tracking-[0.18em] uppercase text-pink-400 font-semibold">
                   Open dashboard →
                 </span>
               </div>
