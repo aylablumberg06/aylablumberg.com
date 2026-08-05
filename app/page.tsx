@@ -220,6 +220,96 @@ function Accordion() {
   );
 }
 
+/* ─── HERO COVER (scroll-scrub orbit video + code typing) ─── */
+
+const COVER_CODE = [
+  "const ayla = {",
+  "  role: 'creative + realtor',",
+  "  city: 'Dallas -> Austin',",
+  "  building: ['brand', 'AI', 'a name'],",
+  "  license: 2026,",
+  "};",
+  "",
+  "function launch(dream) {",
+  "  while (true) ship(dream);",
+  "}",
+  "",
+  "launch(ayla);",
+].join("\n");
+
+function ssmooth(a: number, b: number, x: number) {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
+
+function HeroCover() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [p, setP] = useState(0);
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const track = trackRef.current;
+      const v = videoRef.current;
+      if (!track) return;
+      const rect = track.getBoundingClientRect();
+      const total = track.offsetHeight - window.innerHeight;
+      const prog = Math.min(1, Math.max(0, -rect.top / Math.max(1, total)));
+      setP(prog);
+      if (v && v.duration) {
+        // faster: video finishes by ~82% of the scroll
+        const t = Math.min(1, prog / 0.82) * (v.duration - 0.06);
+        if (Math.abs(v.currentTime - t) > 0.01) v.currentTime = t;
+      }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    if (videoRef.current) videoRef.current.pause();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
+  }, []);
+
+  const typed = COVER_CODE.slice(0, Math.floor(ssmooth(0.04, 0.8, p) * COVER_CODE.length));
+  const codeFade = 1 - ssmooth(0.9, 1, p); // ease code out at the very end
+
+  return (
+    <section ref={trackRef} style={{ height: "210vh", position: "relative", background: "#fff" }}>
+      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "0 5vw" }}>
+        <p style={{ fontFamily: "var(--font-playfair)", fontStyle: "italic", color: "#e8295c", fontSize: "clamp(13px,2vw,17px)", marginBottom: 18, letterSpacing: ".02em", opacity: 1 - ssmooth(0.5, 0.85, p) }}>
+          Creative. Author. The next great real estate agent.
+        </p>
+
+        {/* centered video rectangle */}
+        <div style={{ position: "relative", width: "min(92vw, 960px)", aspectRatio: "16 / 9", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 100px rgba(232,41,92,.18), 0 8px 30px rgba(0,0,0,.12)", border: "1px solid #ffe0ea" }}>
+          <video ref={videoRef} src="/hero/hero-orbit.mp4" poster="/hero/hero-orbit-poster.jpg" muted playsInline preload="auto" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+
+          {/* code editor overlay — sits over the monitor (left side of frame) */}
+          <div style={{ position: "absolute", left: "5%", top: "16%", width: "44%", height: "60%", opacity: codeFade, pointerEvents: "none" }}>
+            <div style={{ height: "100%", background: "rgba(14,10,16,0.82)", borderRadius: 10, boxShadow: "0 10px 30px rgba(0,0,0,.4)", overflow: "hidden", display: "flex", flexDirection: "column", backdropFilter: "blur(2px)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px", background: "rgba(255,255,255,0.06)" }}>
+                <span style={{ width: 8, height: 8, borderRadius: 99, background: "#ff5f57" }} />
+                <span style={{ width: 8, height: 8, borderRadius: 99, background: "#febc2e" }} />
+                <span style={{ width: 8, height: 8, borderRadius: 99, background: "#28c840" }} />
+                <span style={{ marginLeft: 8, color: "#c9b3bd", fontSize: "clamp(8px,1vw,11px)", fontFamily: "monospace" }}>ayla.ts</span>
+              </div>
+              <pre style={{ margin: 0, padding: "12px 14px", color: "#ffd7e6", fontFamily: "ui-monospace,SFMono-Regular,Menlo,monospace", fontSize: "clamp(8px,1.35vw,15px)", lineHeight: 1.55, whiteSpace: "pre-wrap", overflow: "hidden" }}>
+                {typed}
+                <span style={{ display: "inline-block", width: "0.6ch", background: "#e8295c", color: "transparent", animation: "name-appear 1s steps(1) infinite alternate" }}>.</span>
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        {/* scroll hint */}
+        <p style={{ marginTop: 22, color: "#b58aa0", fontSize: 11, letterSpacing: ".22em", textTransform: "uppercase", opacity: 1 - ssmooth(0, 0.12, p) }}>scroll to watch ↓</p>
+      </div>
+    </section>
+  );
+}
+
 /* ─── PAGE ──────────────────────────────────────────────── */
 
 export default function Home() {
@@ -247,6 +337,9 @@ export default function Home() {
 
   return (
     <div className="font-sans">
+
+      {/* ── HERO COVER (scroll-scrub intro; rest of site unchanged below) ── */}
+      <HeroCover />
 
       {/* ── ANNOUNCEMENT TICKER ── */}
       <AnnouncementTicker />
