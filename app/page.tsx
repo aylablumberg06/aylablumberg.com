@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 function Reveal({
   children,
@@ -132,6 +133,11 @@ const pipeline = [
     sub: "Dallas, TX",
     desc: "Creative professional, content creator, and graphic designer. Available for opportunities.",
     detail: "Content · Branding · Design",
+    tiktok: {
+      src: "/tiktok/content.mp4",
+      poster: "/tiktok/content-poster.jpg",
+      href: "https://www.tiktok.com/@aylablumberg.ai/video/7663483502628834590",
+    },
   },
   {
     status: "ACTIVE",
@@ -140,6 +146,11 @@ const pipeline = [
     sub: "Dallas, TX",
     desc: "Licensed Texas real estate agent as of April 2026.",
     detail: "Residential · Investment · Luxury",
+    tiktok: {
+      src: "/tiktok/real-estate.mp4",
+      poster: "/tiktok/real-estate-poster.jpg",
+      href: "https://www.tiktok.com/@aylablumberg.ai/video/7615308084134694174",
+    },
   },
   {
     status: "FALL 2026",
@@ -148,6 +159,11 @@ const pipeline = [
     sub: "Austin, TX",
     desc: "Heading to UT Austin on a full-ride scholarship as a Rosenthal Levy Scholar — Fall 2026.",
     detail: "Rosenthal Levy Scholar · Full Ride · Fall 2026",
+    tiktok: {
+      src: "/tiktok/rory.mp4",
+      poster: "/tiktok/rory-poster.jpg",
+      href: "https://www.tiktok.com/@aylablumberg.ai/video/7667725068130159903",
+    },
   },
 ];
 
@@ -230,14 +246,19 @@ function HeroReel() {
     let raf = 0;
     const update = () => {
       raf = 0;
-      const track = trackRef.current;
       const v = videoRef.current;
-      if (!track) return;
-      const rect = track.getBoundingClientRect();
-      const total = track.offsetHeight - window.innerHeight;
-      const prog = Math.min(1, Math.max(0, -rect.top / Math.max(1, total)));
-      if (v && v.duration) {
-        const t = Math.min(1, prog / 0.82) * (v.duration - 0.06);
+      if (!v) return;
+      // The video is IN-FLOW (no pin) — it scrolls with the page. Drive the orbit
+      // from how far the box has travelled through the viewport, so the motion plays
+      // as it scrolls past rather than freezing the page.
+      const box = v.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const raw = (vh - box.top) / (vh + box.height); // 0 entering at bottom -> 1 leaving past top
+      // play the orbit across the central viewing band (lo..hi), start/end frames held outside it
+      const lo = 0.18, hi = 0.62;
+      const prog = Math.min(1, Math.max(0, (raw - lo) / (hi - lo)));
+      if (v.duration) {
+        const t = prog * (v.duration - 0.06);
         if (Math.abs(v.currentTime - t) > 0.01) v.currentTime = t;
       }
     };
@@ -250,9 +271,8 @@ function HeroReel() {
   }, []);
 
   return (
-    <section ref={trackRef} style={{ height: "150vh", position: "relative", background: "#fff" }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "6vh 6vw" }}>
-        {/* wrapper holds the rectangle + the side scroll cues */}
+    <section ref={trackRef} style={{ background: "#fff", padding: "16vh 6vw", display: "flex", justifyContent: "center" }}>
+        {/* wrapper holds the rectangle + the side scroll cues; scrolls WITH the page (no pin) */}
         <div style={{ position: "relative", width: "min(80vw, 560px)", aspectRatio: "16 / 9" }}>
           {/* video rectangle */}
           <div style={{ position: "absolute", inset: 0, borderRadius: 16, overflow: "hidden", boxShadow: "0 30px 70px rgba(232,41,92,.16), 0 6px 22px rgba(0,0,0,.10)", border: "1px solid #ffe0ea" }}>
@@ -299,8 +319,202 @@ function HeroReel() {
             </div>
           ))}
         </div>
-      </div>
     </section>
+  );
+}
+
+/* ─── TIKTOK HOVER PHONE ───────────────────────────────────
+   Hover (desktop) or tap (mobile) a topic word -> a little pink phone
+   pops up with a muted looping clip; click the phone -> opens the TikTok. */
+const PHONE_W = 138;
+const PHONE_H = 256;
+
+function TikTokPhone({
+  src,
+  poster,
+  href,
+  children,
+}: {
+  src: string;
+  poster: string;
+  href: string;
+  children: React.ReactNode;
+}) {
+  const [show, setShow] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef<HTMLSpanElement>(null);
+  const vref = useRef<HTMLVideoElement>(null);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const canHover = useRef(true);
+
+  useEffect(() => {
+    setMounted(true);
+    canHover.current = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  }, []);
+
+  const openTikTok = () => window.open(href, "_blank", "noopener,noreferrer");
+  useEffect(() => () => { if (hideTimer.current) clearTimeout(hideTimer.current); }, []);
+
+  const cancelHide = () => { if (hideTimer.current) { clearTimeout(hideTimer.current); hideTimer.current = null; } };
+  // delay the hide so the cursor can travel from the trigger word to the portaled
+  // phone (they aren't DOM-adjacent, so without this the phone vanishes mid-reach)
+  const scheduleHide = () => { cancelHide(); hideTimer.current = setTimeout(() => reveal(false), 260); };
+
+  const place = () => {
+    const el = triggerRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    // center horizontally on the trigger, clamped so the phone stays on-screen
+    const cx = Math.min(Math.max(r.left + r.width / 2, PHONE_W / 2 + 8), window.innerWidth - PHONE_W / 2 - 8);
+    // prefer below the trigger; flip above when there isn't room, then clamp to the viewport
+    const below = r.bottom + 12;
+    const above = r.top - 12 - PHONE_H;
+    let top = below + PHONE_H <= window.innerHeight - 8 ? below : above >= 8 ? above : below;
+    top = Math.min(Math.max(top, 8), Math.max(8, window.innerHeight - PHONE_H - 8));
+    setPos({ top, left: cx });
+  };
+
+  const reveal = (on: boolean) => {
+    if (on) place();
+    setShow(on);
+    const v = vref.current;
+    if (v) { if (on) { v.currentTime = 0; v.play().catch(() => {}); } else { v.pause(); } }
+  };
+
+  // keep the fixed popup pinned to its trigger while the page scrolls/resizes
+  useEffect(() => {
+    if (!show) return;
+    let raf = 0;
+    const onMove = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; place(); }); };
+    window.addEventListener("scroll", onMove, { passive: true });
+    window.addEventListener("resize", onMove);
+    return () => {
+      window.removeEventListener("scroll", onMove);
+      window.removeEventListener("resize", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [show]);
+
+  const phone = (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      onMouseEnter={cancelHide}
+      onMouseLeave={scheduleHide}
+      aria-label="Watch on TikTok"
+      data-tiktok-phone="1"
+      style={{
+        position: "fixed",
+        top: pos.top,
+        left: pos.left,
+        marginLeft: -PHONE_W / 2,
+        width: PHONE_W,
+        height: PHONE_H,
+        borderRadius: 30,
+        padding: 4,
+        background: "#fff",
+        boxShadow: "0 20px 44px rgba(255,77,148,.42), 0 4px 12px rgba(0,0,0,.14)",
+        zIndex: 60,
+        display: "block",
+        opacity: show ? 1 : 0,
+        transform: show ? "scale(1) translateY(0)" : "scale(.84) translateY(-6px)",
+        transformOrigin: "top center",
+        pointerEvents: show ? "auto" : "none",
+        transition: "opacity .22s ease, transform .22s cubic-bezier(.2,.9,.3,1.2)",
+      }}
+    >
+      {/* glossy pink body */}
+      {/* invisible bridge over the gap between the trigger word and the phone, so
+          moving the cursor down to the phone never leaves the hover target */}
+      <span aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: -20, height: 20, background: "transparent" }} />
+      <span aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -20, height: 20, background: "transparent" }} />
+
+      <span
+        style={{
+          position: "relative",
+          display: "block",
+          width: "100%",
+          height: "100%",
+          borderRadius: 26,
+          padding: "17px 9px 31px",
+          background: "linear-gradient(155deg,#ff9ec9 0%,#ff69b4 45%,#f0468f 100%)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,.7), inset 0 -2px 6px rgba(180,20,90,.25)",
+          overflow: "hidden",
+        }}
+      >
+        {/* earpiece speaker slot */}
+        <span
+          style={{
+            position: "absolute", top: 7, left: "50%", marginLeft: -12,
+            width: 24, height: 4, borderRadius: 3,
+            background: "rgba(150,15,75,.5)", zIndex: 3,
+          }}
+        />
+
+        {/* screen */}
+        <span style={{ position: "relative", display: "block", width: "100%", height: "100%", borderRadius: 8, overflow: "hidden", background: "#000", boxShadow: "0 0 0 1.5px rgba(255,255,255,.55)" }}>
+          <video
+            ref={vref}
+            src={src}
+            poster={poster}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </span>
+
+        {/* round home button */}
+        <span
+          style={{
+            position: "absolute", bottom: 6, left: "50%", marginLeft: -10,
+            width: 20, height: 20, borderRadius: "50%",
+            background: "linear-gradient(160deg,#ffd0e6 0%,#ff8ec2 100%)",
+            boxShadow: "inset 0 1px 1px rgba(255,255,255,.9), 0 1px 2px rgba(150,15,75,.35)",
+            zIndex: 3,
+          }}
+        />
+
+        {/* glossy sheen sweep */}
+        <span
+          aria-hidden="true"
+          style={{
+            position: "absolute", top: 0, left: 0, right: 0, height: "58%",
+            background: "linear-gradient(200deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.16) 42%,rgba(255,255,255,0) 72%)",
+            borderRadius: "26px 26px 40% 40%",
+            pointerEvents: "none",
+            zIndex: 4,
+          }}
+        />
+      </span>
+    </a>
+  );
+
+  return (
+    <span
+      ref={triggerRef}
+      className="tiktok-cue-wrap"
+      style={{ position: "relative", display: "inline-block", cursor: "pointer" }}
+      onMouseEnter={() => { cancelHide(); reveal(true); }}
+      onMouseLeave={scheduleHide}
+      onClick={(e) => {
+        e.preventDefault();
+        cancelHide();
+        // With a mouse, the preview already showed on hover, so a click means "take me there".
+        // On touch there is no hover: first tap previews, a second tap opens TikTok.
+        if (canHover.current || show) openTikTok();
+        else reveal(true);
+      }}
+      title="Watch the TikTok"
+    >
+      <span className="tiktok-trigger">{children}</span>
+      <span className="tiktok-cue" aria-hidden="true" />
+      {mounted && createPortal(phone, document.body)}
+    </span>
   );
 }
 
@@ -377,8 +591,15 @@ export default function Home() {
 
           {/* Left: text */}
           <Reveal>
-            <p className="text-xs tracking-[0.35em] uppercase text-gray-400 font-medium mb-8">
-              Dallas, TX &nbsp;·&nbsp; Licensed Real Estate Agent
+            <p className="relative z-20 text-xs tracking-[0.35em] uppercase text-gray-400 font-medium mb-8">
+              Dallas, TX &nbsp;·&nbsp;{" "}
+              <TikTokPhone
+                src="/tiktok/real-estate.mp4"
+                poster="/tiktok/real-estate-poster.jpg"
+                href="https://www.tiktok.com/@aylablumberg.ai/video/7615308084134694174"
+              >
+                Licensed Real Estate Agent
+              </TikTokPhone>
             </p>
             <NameSparkles>
               <h1
@@ -574,7 +795,13 @@ export default function Home() {
                     className="text-xl font-bold text-black mb-3 leading-tight"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
-                    {p.title}
+                    {"tiktok" in p && p.tiktok ? (
+                      <TikTokPhone src={p.tiktok.src} poster={p.tiktok.poster} href={p.tiktok.href}>
+                        {p.title}
+                      </TikTokPhone>
+                    ) : (
+                      p.title
+                    )}
                   </h3>
                   <p className="text-sm text-gray-500 leading-relaxed mb-5">{p.desc}</p>
                   <div className="border-t border-gray-100 pt-4">
@@ -706,8 +933,14 @@ export default function Home() {
                     className="text-4xl md:text-5xl font-bold text-black mb-3 leading-[1.05]"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
-                    Ayla<br />
-                    <span className="italic text-pink-400">Intelligence.</span>
+                    <TikTokPhone
+                      src="/tiktok/ai.mp4"
+                      poster="/tiktok/ai-poster.jpg"
+                      href="https://www.tiktok.com/@aylablumberg.ai/video/7664620514740014367"
+                    >
+                      Ayla<br />
+                      <span className="italic text-pink-400">Intelligence.</span>
+                    </TikTokPhone>
                   </h3>
                   <p
                     className="text-pink-400 text-base font-medium mb-6 italic"
@@ -775,8 +1008,14 @@ export default function Home() {
                     className="text-4xl md:text-5xl font-bold text-black mb-3 leading-[1.05]"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
-                    Ayla<br />
-                    <span className="italic text-pink-400">Unlocked.</span>
+                    <TikTokPhone
+                      src="/tiktok/unlocked.mp4"
+                      poster="/tiktok/unlocked-poster.jpg"
+                      href="https://www.tiktok.com/@aylablumberg.ai/video/7633205134192839966"
+                    >
+                      Ayla<br />
+                      <span className="italic text-pink-400">Unlocked.</span>
+                    </TikTokPhone>
                   </h3>
                   <p
                     className="text-pink-400 text-base font-medium mb-6 italic"
