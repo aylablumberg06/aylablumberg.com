@@ -142,7 +142,7 @@ const pipeline = [
     detail: "Residential · Investment · Luxury",
   },
   {
-    status: "COMING SOON",
+    status: "FALL 2026",
     statusColor: "bg-pink-100 text-pink-500",
     title: "University of Texas",
     sub: "Austin, TX",
@@ -388,7 +388,7 @@ export default function Home() {
           {/* Left: text */}
           <Reveal>
             <p className="text-xs tracking-[0.35em] uppercase text-gray-400 font-medium mb-8">
-              Dallas, TX &nbsp;·&nbsp; Future Real Estate Agent
+              Dallas, TX &nbsp;·&nbsp; Licensed Real Estate Agent
             </p>
             <NameSparkles>
               <h1
@@ -420,7 +420,7 @@ export default function Home() {
               className="text-lg text-gray-400 mb-10 italic max-w-md"
               style={{ fontFamily: "var(--font-playfair)" }}
             >
-              Creative. Author. The next great real estate agent.
+              Creative. Author. Licensed real estate agent.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -1135,7 +1135,7 @@ export default function Home() {
                   Ayla<br />Blumberg
                 </h3>
                 <p className="text-white/80 text-[9px] tracking-[0.25em] uppercase mt-3">
-                  Creative · Future Real Estate Agent
+                  Creative · Licensed Real Estate Agent
                 </p>
               </div>
 
