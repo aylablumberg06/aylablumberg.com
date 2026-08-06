@@ -159,6 +159,11 @@ const pipeline = [
     sub: "Austin, TX",
     desc: "Heading to UT Austin on a full-ride scholarship as a Rosenthal Levy Scholar — Fall 2026.",
     detail: "Rosenthal Levy Scholar · Full Ride · Fall 2026",
+    tiktok: {
+      src: "/tiktok/rory.mp4",
+      poster: "/tiktok/rory-poster.jpg",
+      href: "https://www.tiktok.com/@aylablumberg.ai/video/7667725068130159903",
+    },
   },
 ];
 
@@ -340,8 +345,15 @@ function TikTokPhone({
   const [pos, setPos] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLSpanElement>(null);
   const vref = useRef<HTMLVideoElement>(null);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => setMounted(true), []);
+  useEffect(() => () => { if (hideTimer.current) clearTimeout(hideTimer.current); }, []);
+
+  const cancelHide = () => { if (hideTimer.current) { clearTimeout(hideTimer.current); hideTimer.current = null; } };
+  // delay the hide so the cursor can travel from the trigger word to the portaled
+  // phone (they aren't DOM-adjacent, so without this the phone vanishes mid-reach)
+  const scheduleHide = () => { cancelHide(); hideTimer.current = setTimeout(() => reveal(false), 260); };
 
   const place = () => {
     const el = triggerRef.current;
@@ -384,6 +396,8 @@ function TikTokPhone({
       target="_blank"
       rel="noopener noreferrer"
       onClick={(e) => e.stopPropagation()}
+      onMouseEnter={cancelHide}
+      onMouseLeave={scheduleHide}
       aria-label="Watch on TikTok"
       style={{
         position: "fixed",
@@ -473,9 +487,9 @@ function TikTokPhone({
       ref={triggerRef}
       className="tiktok-cue-wrap"
       style={{ position: "relative", display: "inline-block", cursor: "pointer" }}
-      onMouseEnter={() => reveal(true)}
-      onMouseLeave={() => reveal(false)}
-      onClick={(e) => { e.preventDefault(); reveal(!show); }}
+      onMouseEnter={() => { cancelHide(); reveal(true); }}
+      onMouseLeave={scheduleHide}
+      onClick={(e) => { e.preventDefault(); cancelHide(); reveal(!show); }}
       title="Watch the TikTok"
     >
       <span className="tiktok-trigger">{children}</span>
