@@ -142,7 +142,7 @@ const pipeline = [
     detail: "Residential · Investment · Luxury",
   },
   {
-    status: "COMING SOON",
+    status: "FALL 2026",
     statusColor: "bg-pink-100 text-pink-500",
     title: "University of Texas",
     sub: "Austin, TX",
@@ -220,6 +220,90 @@ function Accordion() {
   );
 }
 
+/* ─── HERO REEL (small under-the-name scroll-scrub video, code ON the monitor) ─── */
+
+function HeroReel() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const track = trackRef.current;
+      const v = videoRef.current;
+      if (!track) return;
+      const rect = track.getBoundingClientRect();
+      const total = track.offsetHeight - window.innerHeight;
+      const prog = Math.min(1, Math.max(0, -rect.top / Math.max(1, total)));
+      if (v && v.duration) {
+        const t = Math.min(1, prog / 0.82) * (v.duration - 0.06);
+        if (Math.abs(v.currentTime - t) > 0.01) v.currentTime = t;
+      }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    if (videoRef.current) videoRef.current.pause();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
+  }, []);
+
+  return (
+    <section ref={trackRef} style={{ height: "150vh", position: "relative", background: "#fff" }}>
+      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "6vh 6vw" }}>
+        {/* wrapper holds the rectangle + the side scroll cues */}
+        <div style={{ position: "relative", width: "min(80vw, 560px)", aspectRatio: "16 / 9" }}>
+          {/* video rectangle */}
+          <div style={{ position: "absolute", inset: 0, borderRadius: 16, overflow: "hidden", boxShadow: "0 30px 70px rgba(232,41,92,.16), 0 6px 22px rgba(0,0,0,.10)", border: "1px solid #ffe0ea" }}>
+            <video ref={videoRef} src="/hero/hero-orbit-kf.mp4" poster="/hero/hero-orbit-poster.jpg" muted playsInline preload="auto" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+
+          {/* scroll cues just OUTSIDE the rectangle on both sides, pink — "there's more below" */}
+          {(["left", "right"] as const).map((sideKey) => (
+            <div
+              key={sideKey}
+              style={{
+                position: "absolute",
+                top: "50%",
+                // sit just outside the box: pin to the opposite edge at 100% and nudge out
+                [sideKey === "left" ? "right" : "left"]: "100%",
+                [sideKey === "left" ? "marginRight" : "marginLeft"]: 14,
+                transform: "translateY(-50%)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 8,
+                opacity: 1,
+                pointerEvents: "none",
+              }}
+            >
+              <span style={{ writingMode: "vertical-rl", fontSize: 11, fontWeight: 700, letterSpacing: ".34em", textTransform: "uppercase", color: "#e8295c" }}>scroll</span>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    style={{
+                      display: "block",
+                      width: 10,
+                      height: 10,
+                      borderRight: "2px solid #e8295c",
+                      borderBottom: "2px solid #e8295c",
+                      transform: "rotate(45deg)",
+                      animation: "scroll-cue 1.5s ease-in-out infinite",
+                      animationDelay: `${i * 0.18}s`,
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─── PAGE ──────────────────────────────────────────────── */
 
 export default function Home() {
@@ -294,7 +378,7 @@ export default function Home() {
           {/* Left: text */}
           <Reveal>
             <p className="text-xs tracking-[0.35em] uppercase text-gray-400 font-medium mb-8">
-              Dallas, TX &nbsp;·&nbsp; Future Real Estate Agent
+              Dallas, TX &nbsp;·&nbsp; Licensed Real Estate Agent
             </p>
             <NameSparkles>
               <h1
@@ -326,7 +410,7 @@ export default function Home() {
               className="text-lg text-gray-400 mb-10 italic max-w-md"
               style={{ fontFamily: "var(--font-playfair)" }}
             >
-              Creative. Author. The next great real estate agent.
+              Creative. Author. Licensed real estate agent.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
@@ -398,6 +482,9 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      {/* ── HERO REEL (small scroll-scrub video under the name; code on the monitor) ── */}
+      <HeroReel />
 
       {/* ── STATS STRIP ── */}
       <div className="bg-black py-14 px-6">
@@ -1038,7 +1125,7 @@ export default function Home() {
                   Ayla<br />Blumberg
                 </h3>
                 <p className="text-white/80 text-[9px] tracking-[0.25em] uppercase mt-3">
-                  Creative · Future Real Estate Agent
+                  Creative · Licensed Real Estate Agent
                 </p>
               </div>
 
