@@ -226,10 +226,7 @@ const COVER_CODE = [
   "const ayla = {",
   "  role: 'realtor',",
   "  city: 'Dallas',",
-  "  building: [",
-  "    'brand',",
-  "    'AI',",
-  "  ],",
+  "  build: ['brand','AI'],",
   "  license: 2026,",
   "}",
   "ship(ayla)",
@@ -269,43 +266,46 @@ function HeroReel() {
     return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
   }, []);
 
-  const typed = COVER_CODE.slice(0, Math.floor(ssmooth(0.05, 0.78, p) * COVER_CODE.length));
-  const codeFade = 1 - ssmooth(0.86, 1, p); // screen turns away at the very end
+  const typed = COVER_CODE.slice(0, Math.floor(ssmooth(0.05, 0.72, p) * COVER_CODE.length));
+  const codeFade = 1 - ssmooth(0.9, 1, p); // screen edges away only at the very end
+  // monitor screen bounds tracked across the orbit (measured from the clip, % of the 16:9 frame)
+  const L = 20.5 + 2.5 * p, T = 35.5 + 2.0 * p, W = 26.5 - 8.0 * p, H = 29.0 + 2.5 * p;
 
   return (
-    <section ref={trackRef} style={{ height: "180vh", position: "relative", background: "#fff" }}>
+    <section ref={trackRef} style={{ height: "150vh", position: "relative", background: "#fff" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "6vh 6vw" }}>
         {/* small centered video rectangle */}
-        <div style={{ position: "relative", width: "min(88vw, 560px)", aspectRatio: "16 / 9", borderRadius: 16, overflow: "hidden", boxShadow: "0 30px 70px rgba(232,41,92,.16), 0 6px 22px rgba(0,0,0,.10)", border: "1px solid #ffe0ea" }}>
-          <video ref={videoRef} src="/hero/hero-orbit.mp4" poster="/hero/hero-orbit-poster.jpg" muted playsInline preload="auto" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+        <div style={{ position: "relative", width: "min(90vw, 560px)", aspectRatio: "16 / 9", borderRadius: 16, overflow: "hidden", boxShadow: "0 30px 70px rgba(232,41,92,.16), 0 6px 22px rgba(0,0,0,.10)", border: "1px solid #ffe0ea" }}>
+          <video ref={videoRef} src="/hero/hero-orbit-kf.mp4" poster="/hero/hero-orbit-poster.jpg" muted playsInline preload="auto" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
 
-          {/* code painted ONTO the monitor glass (perspective-skewed to the screen, tracks the orbit) */}
+          {/* code locked INSIDE the monitor's dark screen area and clipped to it */}
           <div
             style={{
               position: "absolute",
-              left: "20%", top: "37%", width: "26%", height: "33%",
-              transform: `perspective(640px) rotateY(${-18 - 9 * p}deg)`,
-              transformOrigin: "left center",
+              left: `${L}%`, top: `${T}%`, width: `${W}%`, height: `${H}%`,
+              transform: `perspective(720px) rotateY(${-7 - 4 * p}deg)`,
+              transformOrigin: "center",
               opacity: codeFade,
               pointerEvents: "none",
               overflow: "hidden",
-              background: "rgba(8,12,10,0.34)",
+              borderRadius: 3,
+              background: "rgba(5,9,7,0.94)",
             }}
           >
             <pre
               style={{
                 margin: 0,
-                padding: "4% 6%",
-                color: "#b7ffce",
+                padding: "5% 6%",
+                color: "#8dffb0",
                 fontFamily: "ui-monospace,SFMono-Regular,Menlo,monospace",
-                fontSize: "clamp(4px,1.15vw,10px)",
-                lineHeight: 1.42,
+                fontSize: "clamp(4px,1.05vw,9px)",
+                lineHeight: 1.32,
                 whiteSpace: "pre",
-                textShadow: "0 0 5px rgba(120,255,170,.55)",
+                textShadow: "0 0 4px rgba(110,255,160,.6)",
               }}
             >
               {typed}
-              <span style={{ background: "#b7ffce", color: "transparent", animation: "name-appear 1s steps(1) infinite alternate" }}>_</span>
+              <span style={{ background: "#8dffb0", color: "transparent", animation: "name-appear 1s steps(1) infinite alternate" }}>_</span>
             </pre>
           </div>
         </div>
