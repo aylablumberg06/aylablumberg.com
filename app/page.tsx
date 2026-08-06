@@ -346,8 +346,14 @@ function TikTokPhone({
   const triggerRef = useRef<HTMLSpanElement>(null);
   const vref = useRef<HTMLVideoElement>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const canHover = useRef(true);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    canHover.current = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  }, []);
+
+  const openTikTok = () => window.open(href, "_blank", "noopener,noreferrer");
   useEffect(() => () => { if (hideTimer.current) clearTimeout(hideTimer.current); }, []);
 
   const cancelHide = () => { if (hideTimer.current) { clearTimeout(hideTimer.current); hideTimer.current = null; } };
@@ -399,6 +405,7 @@ function TikTokPhone({
       onMouseEnter={cancelHide}
       onMouseLeave={scheduleHide}
       aria-label="Watch on TikTok"
+      data-tiktok-phone="1"
       style={{
         position: "fixed",
         top: pos.top,
@@ -420,6 +427,11 @@ function TikTokPhone({
       }}
     >
       {/* glossy pink body */}
+      {/* invisible bridge over the gap between the trigger word and the phone, so
+          moving the cursor down to the phone never leaves the hover target */}
+      <span aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: -20, height: 20, background: "transparent" }} />
+      <span aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -20, height: 20, background: "transparent" }} />
+
       <span
         style={{
           position: "relative",
@@ -489,7 +501,14 @@ function TikTokPhone({
       style={{ position: "relative", display: "inline-block", cursor: "pointer" }}
       onMouseEnter={() => { cancelHide(); reveal(true); }}
       onMouseLeave={scheduleHide}
-      onClick={(e) => { e.preventDefault(); cancelHide(); reveal(!show); }}
+      onClick={(e) => {
+        e.preventDefault();
+        cancelHide();
+        // With a mouse, the preview already showed on hover, so a click means "take me there".
+        // On touch there is no hover: first tap previews, a second tap opens TikTok.
+        if (canHover.current || show) openTikTok();
+        else reveal(true);
+      }}
       title="Watch the TikTok"
     >
       <span className="tiktok-trigger">{children}</span>
