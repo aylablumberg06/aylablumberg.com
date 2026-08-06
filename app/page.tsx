@@ -318,6 +318,9 @@ function HeroReel() {
 /* ─── TIKTOK HOVER PHONE ───────────────────────────────────
    Hover (desktop) or tap (mobile) a topic word -> a little pink phone
    pops up with a muted looping clip; click the phone -> opens the TikTok. */
+const PHONE_W = 132;
+const PHONE_H = 238;
+
 function TikTokPhone({
   src,
   poster,
@@ -341,9 +344,14 @@ function TikTokPhone({
     const el = triggerRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    // center under the trigger, clamped so the 128px phone stays on-screen
-    const cx = Math.min(Math.max(r.left + r.width / 2, 72), window.innerWidth - 72);
-    setPos({ top: r.bottom + 12, left: cx });
+    // center horizontally on the trigger, clamped so the phone stays on-screen
+    const cx = Math.min(Math.max(r.left + r.width / 2, PHONE_W / 2 + 8), window.innerWidth - PHONE_W / 2 - 8);
+    // prefer below the trigger; flip above when there isn't room, then clamp to the viewport
+    const below = r.bottom + 12;
+    const above = r.top - 12 - PHONE_H;
+    let top = below + PHONE_H <= window.innerHeight - 8 ? below : above >= 8 ? above : below;
+    top = Math.min(Math.max(top, 8), Math.max(8, window.innerHeight - PHONE_H - 8));
+    setPos({ top, left: cx });
   };
 
   const reveal = (on: boolean) => {
@@ -353,12 +361,18 @@ function TikTokPhone({
     if (v) { if (on) { v.currentTime = 0; v.play().catch(() => {}); } else { v.pause(); } }
   };
 
-  // fixed popup would detach on scroll — just hide it while scrolling
+  // keep the fixed popup pinned to its trigger while the page scrolls/resizes
   useEffect(() => {
     if (!show) return;
-    const hide = () => reveal(false);
-    window.addEventListener("scroll", hide, { passive: true });
-    return () => window.removeEventListener("scroll", hide);
+    let raf = 0;
+    const onMove = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; place(); }); };
+    window.addEventListener("scroll", onMove, { passive: true });
+    window.addEventListener("resize", onMove);
+    return () => {
+      window.removeEventListener("scroll", onMove);
+      window.removeEventListener("resize", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [show]);
 
   const phone = (
@@ -372,38 +386,55 @@ function TikTokPhone({
         position: "fixed",
         top: pos.top,
         left: pos.left,
-        marginLeft: -64,
-        width: 128,
-        height: 228,
-        borderRadius: 22,
-        padding: 5,
-        background: "linear-gradient(160deg,#ff5c9d 0%,#e8295c 100%)",
-        boxShadow: "0 18px 40px rgba(232,41,92,.4), 0 4px 12px rgba(0,0,0,.18)",
+        marginLeft: -PHONE_W / 2,
+        width: PHONE_W,
+        height: PHONE_H,
+        borderRadius: 26,
+        padding: "8px 7px 12px",
+        background: "linear-gradient(158deg,#ffa6cd 0%,#ff69b4 42%,#ff4d94 100%)",
+        boxShadow:
+          "0 20px 44px rgba(255,77,148,.42), 0 4px 12px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.55)",
         zIndex: 60,
         display: "block",
         opacity: show ? 1 : 0,
-        transform: show ? "scale(1) translateY(0)" : "scale(.82) translateY(-8px)",
+        transform: show ? "scale(1) translateY(0)" : "scale(.84) translateY(-6px)",
         transformOrigin: "top center",
         pointerEvents: show ? "auto" : "none",
         transition: "opacity .22s ease, transform .22s cubic-bezier(.2,.9,.3,1.2)",
       }}
     >
-      <span
-        style={{
-          position: "absolute", top: 11, left: "50%", marginLeft: -18,
-          width: 36, height: 5, borderRadius: 3, background: "rgba(255,255,255,.85)", zIndex: 2,
-        }}
-      />
-      <video
-        ref={vref}
-        src={src}
-        poster={poster}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 18, display: "block", background: "#000" }}
-      />
+      {/* side buttons */}
+      <span style={{ position: "absolute", left: -2, top: 54, width: 2, height: 16, borderRadius: 2, background: "#ff8ec2" }} />
+      <span style={{ position: "absolute", left: -2, top: 76, width: 2, height: 16, borderRadius: 2, background: "#ff8ec2" }} />
+      <span style={{ position: "absolute", right: -2, top: 62, width: 2, height: 26, borderRadius: 2, background: "#ff8ec2" }} />
+
+      {/* screen */}
+      <span style={{ position: "relative", display: "block", width: "100%", height: "100%", borderRadius: 19, overflow: "hidden", background: "#000" }}>
+        <video
+          ref={vref}
+          src={src}
+          poster={poster}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
+        {/* dynamic island */}
+        <span
+          style={{
+            position: "absolute", top: 5, left: "50%", marginLeft: -17,
+            width: 34, height: 10, borderRadius: 999, background: "#000", zIndex: 2,
+          }}
+        />
+        {/* home indicator */}
+        <span
+          style={{
+            position: "absolute", bottom: 5, left: "50%", marginLeft: -19,
+            width: 38, height: 3, borderRadius: 2, background: "rgba(255,255,255,.75)", zIndex: 2,
+          }}
+        />
+      </span>
     </a>
   );
 
