@@ -304,6 +304,94 @@ function HeroReel() {
   );
 }
 
+/* ─── TIKTOK HOVER PHONE ───────────────────────────────────
+   Hover (desktop) or tap (mobile) a topic word -> a little pink phone
+   pops up with a muted looping clip; click the phone -> opens the TikTok. */
+function TikTokPhone({
+  src,
+  poster,
+  href,
+  children,
+}: {
+  src: string;
+  poster: string;
+  href: string;
+  children: React.ReactNode;
+}) {
+  const [show, setShow] = useState(false);
+  const vref = useRef<HTMLVideoElement>(null);
+
+  const reveal = (on: boolean) => {
+    setShow(on);
+    const v = vref.current;
+    if (v) {
+      if (on) { v.currentTime = 0; v.play().catch(() => {}); } else { v.pause(); }
+    }
+  };
+
+  return (
+    <span
+      style={{ position: "relative", display: "inline-block", cursor: "pointer" }}
+      onMouseEnter={() => reveal(true)}
+      onMouseLeave={() => reveal(false)}
+      onClick={(e) => { e.preventDefault(); reveal(!show); }}
+    >
+      <span style={{ borderBottom: "1.5px dotted #e8295c", paddingBottom: 1 }}>{children}</span>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        aria-label="Watch on TikTok"
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "calc(100% + 12px)",
+          width: 128,
+          height: 228,
+          marginLeft: -64,
+          borderRadius: 22,
+          padding: 5,
+          background: "linear-gradient(160deg,#ff5c9d 0%,#e8295c 100%)",
+          boxShadow: "0 18px 40px rgba(232,41,92,.4), 0 4px 12px rgba(0,0,0,.18)",
+          zIndex: 50,
+          display: "block",
+          opacity: show ? 1 : 0,
+          transform: show ? "scale(1) translateY(0)" : "scale(.82) translateY(-8px)",
+          transformOrigin: "top center",
+          pointerEvents: show ? "auto" : "none",
+          transition: "opacity .22s ease, transform .22s cubic-bezier(.2,.9,.3,1.2)",
+        }}
+      >
+        {/* notch */}
+        <span
+          style={{
+            position: "absolute",
+            top: 11,
+            left: "50%",
+            marginLeft: -18,
+            width: 36,
+            height: 5,
+            borderRadius: 3,
+            background: "rgba(255,255,255,.85)",
+            zIndex: 2,
+          }}
+        />
+        <video
+          ref={vref}
+          src={src}
+          poster={poster}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 18, display: "block", background: "#000" }}
+        />
+      </a>
+    </span>
+  );
+}
+
 /* ─── PAGE ──────────────────────────────────────────────── */
 
 export default function Home() {
@@ -378,7 +466,14 @@ export default function Home() {
           {/* Left: text */}
           <Reveal>
             <p className="text-xs tracking-[0.35em] uppercase text-gray-400 font-medium mb-8">
-              Dallas, TX &nbsp;·&nbsp; Licensed Real Estate Agent
+              Dallas, TX &nbsp;·&nbsp;{" "}
+              <TikTokPhone
+                src="/tiktok/real-estate.mp4"
+                poster="/tiktok/real-estate-poster.jpg"
+                href="https://www.tiktok.com/@aylablumberg.ai/video/7615308084134694174"
+              >
+                Licensed Real Estate Agent
+              </TikTokPhone>
             </p>
             <NameSparkles>
               <h1
