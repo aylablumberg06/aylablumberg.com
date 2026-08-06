@@ -57,3 +57,46 @@ html {
   35% { opacity: 1; }
   100% { transform: translateY(14px); opacity: 0; }
 }
+
+/* ── TikTok hover-phone affordance ──
+   A pulsing pink play-chip so people know there's a video to hover/tap. */
+@keyframes tiktok-cue-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 41, 92, 0.5), 0 2px 8px rgba(232, 41, 92, 0.3); }
+  50%      { box-shadow: 0 0 0 7px rgba(232, 41, 92, 0), 0 2px 8px rgba(232, 41, 92, 0.3); }
+}
+
+.tiktok-trigger {
+  border-bottom: 1.5px solid rgba(232, 41, 92, 0.45);
+  padding-bottom: 1px;
+  transition: border-color 0.2s ease, text-shadow 0.2s ease;
+}
+.tiktok-cue-wrap:hover .tiktok-trigger {
+  border-bottom-color: #e8295c;
+  text-shadow: 0 0 14px rgba(232, 41, 92, 0.4);
+}
+
+.tiktok-cue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  margin-left: 6px;
+  border-radius: 999px;
+  background: linear-gradient(160deg, #ff5c9d 0%, #e8295c 100%);
+  vertical-align: middle;
+  animation: tiktok-cue-pulse 2.2s ease-in-out infinite;
+  transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  flex: none;
+}
+.tiktok-cue-wrap:hover .tiktok-cue { transform: scale(1.22); }
+.tiktok-cue::before {
+  content: "";
+  border-style: solid;
+  border-width: 4px 0 4px 6.5px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 1.5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tiktok-cue { animation: none; }
+}

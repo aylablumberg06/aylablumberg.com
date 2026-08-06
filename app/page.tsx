@@ -410,12 +410,15 @@ function TikTokPhone({
   return (
     <span
       ref={triggerRef}
+      className="tiktok-cue-wrap"
       style={{ position: "relative", display: "inline-block", cursor: "pointer" }}
       onMouseEnter={() => reveal(true)}
       onMouseLeave={() => reveal(false)}
       onClick={(e) => { e.preventDefault(); reveal(!show); }}
+      title="Watch the TikTok"
     >
-      <span style={{ borderBottom: "1.5px dotted #e8295c", paddingBottom: 1 }}>{children}</span>
+      <span className="tiktok-trigger">{children}</span>
+      <span className="tiktok-cue" aria-hidden="true" />
       {mounted && createPortal(phone, document.body)}
     </span>
   );
