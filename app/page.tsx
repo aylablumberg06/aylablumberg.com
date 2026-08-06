@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 function Reveal({
   children,
@@ -132,6 +133,11 @@ const pipeline = [
     sub: "Dallas, TX",
     desc: "Creative professional, content creator, and graphic designer. Available for opportunities.",
     detail: "Content · Branding · Design",
+    tiktok: {
+      src: "/tiktok/content.mp4",
+      poster: "/tiktok/content-poster.jpg",
+      href: "https://www.tiktok.com/@aylablumberg.ai/video/7663483502628834590",
+    },
   },
   {
     status: "ACTIVE",
@@ -140,6 +146,11 @@ const pipeline = [
     sub: "Dallas, TX",
     desc: "Licensed Texas real estate agent as of April 2026.",
     detail: "Residential · Investment · Luxury",
+    tiktok: {
+      src: "/tiktok/real-estate.mp4",
+      poster: "/tiktok/real-estate-poster.jpg",
+      href: "https://www.tiktok.com/@aylablumberg.ai/video/7615308084134694174",
+    },
   },
   {
     status: "FALL 2026",
@@ -319,75 +330,93 @@ function TikTokPhone({
   children: React.ReactNode;
 }) {
   const [show, setShow] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef<HTMLSpanElement>(null);
   const vref = useRef<HTMLVideoElement>(null);
 
+  useEffect(() => setMounted(true), []);
+
+  const place = () => {
+    const el = triggerRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    // center under the trigger, clamped so the 128px phone stays on-screen
+    const cx = Math.min(Math.max(r.left + r.width / 2, 72), window.innerWidth - 72);
+    setPos({ top: r.bottom + 12, left: cx });
+  };
+
   const reveal = (on: boolean) => {
+    if (on) place();
     setShow(on);
     const v = vref.current;
-    if (v) {
-      if (on) { v.currentTime = 0; v.play().catch(() => {}); } else { v.pause(); }
-    }
+    if (v) { if (on) { v.currentTime = 0; v.play().catch(() => {}); } else { v.pause(); } }
   };
+
+  // fixed popup would detach on scroll — just hide it while scrolling
+  useEffect(() => {
+    if (!show) return;
+    const hide = () => reveal(false);
+    window.addEventListener("scroll", hide, { passive: true });
+    return () => window.removeEventListener("scroll", hide);
+  }, [show]);
+
+  const phone = (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      aria-label="Watch on TikTok"
+      style={{
+        position: "fixed",
+        top: pos.top,
+        left: pos.left,
+        marginLeft: -64,
+        width: 128,
+        height: 228,
+        borderRadius: 22,
+        padding: 5,
+        background: "linear-gradient(160deg,#ff5c9d 0%,#e8295c 100%)",
+        boxShadow: "0 18px 40px rgba(232,41,92,.4), 0 4px 12px rgba(0,0,0,.18)",
+        zIndex: 60,
+        display: "block",
+        opacity: show ? 1 : 0,
+        transform: show ? "scale(1) translateY(0)" : "scale(.82) translateY(-8px)",
+        transformOrigin: "top center",
+        pointerEvents: show ? "auto" : "none",
+        transition: "opacity .22s ease, transform .22s cubic-bezier(.2,.9,.3,1.2)",
+      }}
+    >
+      <span
+        style={{
+          position: "absolute", top: 11, left: "50%", marginLeft: -18,
+          width: 36, height: 5, borderRadius: 3, background: "rgba(255,255,255,.85)", zIndex: 2,
+        }}
+      />
+      <video
+        ref={vref}
+        src={src}
+        poster={poster}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 18, display: "block", background: "#000" }}
+      />
+    </a>
+  );
 
   return (
     <span
+      ref={triggerRef}
       style={{ position: "relative", display: "inline-block", cursor: "pointer" }}
       onMouseEnter={() => reveal(true)}
       onMouseLeave={() => reveal(false)}
       onClick={(e) => { e.preventDefault(); reveal(!show); }}
     >
       <span style={{ borderBottom: "1.5px dotted #e8295c", paddingBottom: 1 }}>{children}</span>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={(e) => e.stopPropagation()}
-        aria-label="Watch on TikTok"
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: "calc(100% + 12px)",
-          width: 128,
-          height: 228,
-          marginLeft: -64,
-          borderRadius: 22,
-          padding: 5,
-          background: "linear-gradient(160deg,#ff5c9d 0%,#e8295c 100%)",
-          boxShadow: "0 18px 40px rgba(232,41,92,.4), 0 4px 12px rgba(0,0,0,.18)",
-          zIndex: 50,
-          display: "block",
-          opacity: show ? 1 : 0,
-          transform: show ? "scale(1) translateY(0)" : "scale(.82) translateY(-8px)",
-          transformOrigin: "top center",
-          pointerEvents: show ? "auto" : "none",
-          transition: "opacity .22s ease, transform .22s cubic-bezier(.2,.9,.3,1.2)",
-        }}
-      >
-        {/* notch */}
-        <span
-          style={{
-            position: "absolute",
-            top: 11,
-            left: "50%",
-            marginLeft: -18,
-            width: 36,
-            height: 5,
-            borderRadius: 3,
-            background: "rgba(255,255,255,.85)",
-            zIndex: 2,
-          }}
-        />
-        <video
-          ref={vref}
-          src={src}
-          poster={poster}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 18, display: "block", background: "#000" }}
-        />
-      </a>
+      {mounted && createPortal(phone, document.body)}
     </span>
   );
 }
@@ -669,7 +698,13 @@ export default function Home() {
                     className="text-xl font-bold text-black mb-3 leading-tight"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
-                    {p.title}
+                    {"tiktok" in p && p.tiktok ? (
+                      <TikTokPhone src={p.tiktok.src} poster={p.tiktok.poster} href={p.tiktok.href}>
+                        {p.title}
+                      </TikTokPhone>
+                    ) : (
+                      p.title
+                    )}
                   </h3>
                   <p className="text-sm text-gray-500 leading-relaxed mb-5">{p.desc}</p>
                   <div className="border-t border-gray-100 pt-4">
@@ -801,8 +836,14 @@ export default function Home() {
                     className="text-4xl md:text-5xl font-bold text-black mb-3 leading-[1.05]"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
-                    Ayla<br />
-                    <span className="italic text-pink-400">Intelligence.</span>
+                    <TikTokPhone
+                      src="/tiktok/ai.mp4"
+                      poster="/tiktok/ai-poster.jpg"
+                      href="https://www.tiktok.com/@aylablumberg.ai/video/7664620514740014367"
+                    >
+                      Ayla<br />
+                      <span className="italic text-pink-400">Intelligence.</span>
+                    </TikTokPhone>
                   </h3>
                   <p
                     className="text-pink-400 text-base font-medium mb-6 italic"
@@ -870,8 +911,14 @@ export default function Home() {
                     className="text-4xl md:text-5xl font-bold text-black mb-3 leading-[1.05]"
                     style={{ fontFamily: "var(--font-playfair)" }}
                   >
-                    Ayla<br />
-                    <span className="italic text-pink-400">Unlocked.</span>
+                    <TikTokPhone
+                      src="/tiktok/unlocked.mp4"
+                      poster="/tiktok/unlocked-poster.jpg"
+                      href="https://www.tiktok.com/@aylablumberg.ai/video/7633205134192839966"
+                    >
+                      Ayla<br />
+                      <span className="italic text-pink-400">Unlocked.</span>
+                    </TikTokPhone>
                   </h3>
                   <p
                     className="text-pink-400 text-base font-medium mb-6 italic"
