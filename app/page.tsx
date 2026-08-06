@@ -222,15 +222,9 @@ function Accordion() {
 
 /* ─── HERO REEL (small under-the-name scroll-scrub video, code ON the monitor) ─── */
 
-function ssmooth(a: number, b: number, x: number) {
-  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
-  return t * t * (3 - 2 * t);
-}
-
 function HeroReel() {
   const trackRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [p, setP] = useState(0);
 
   useEffect(() => {
     let raf = 0;
@@ -242,7 +236,6 @@ function HeroReel() {
       const rect = track.getBoundingClientRect();
       const total = track.offsetHeight - window.innerHeight;
       const prog = Math.min(1, Math.max(0, -rect.top / Math.max(1, total)));
-      setP(prog);
       if (v && v.duration) {
         const t = Math.min(1, prog / 0.82) * (v.duration - 0.06);
         if (Math.abs(v.currentTime - t) > 0.01) v.currentTime = t;
@@ -255,8 +248,6 @@ function HeroReel() {
     update();
     return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
   }, []);
-
-  const cueFade = 1 - ssmooth(0.12, 0.45, p); // side cues fade once the viewer starts scrolling
 
   return (
     <section ref={trackRef} style={{ height: "150vh", position: "relative", background: "#fff" }}>
@@ -283,9 +274,8 @@ function HeroReel() {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: 8,
-                opacity: cueFade,
+                opacity: 1,
                 pointerEvents: "none",
-                transition: "opacity .3s ease",
               }}
             >
               <span style={{ writingMode: "vertical-rl", fontSize: 11, fontWeight: 700, letterSpacing: ".34em", textTransform: "uppercase", color: "#e8295c" }}>scroll</span>
