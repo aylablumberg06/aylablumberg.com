@@ -256,7 +256,7 @@ function HeroReel() {
     return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
   }, []);
 
-  const cueFade = 1 - ssmooth(0.04, 0.3, p); // side cues fade once the viewer starts scrolling
+  const cueFade = 1 - ssmooth(0.12, 0.45, p); // side cues fade once the viewer starts scrolling
 
   return (
     <section ref={trackRef} style={{ height: "150vh", position: "relative", background: "#fff" }}>
@@ -268,26 +268,43 @@ function HeroReel() {
             <video ref={videoRef} src="/hero/hero-orbit-kf.mp4" poster="/hero/hero-orbit-poster.jpg" muted playsInline preload="auto" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
 
-          {/* subtle "scroll" cues on both inner sides of the rectangle */}
+          {/* scroll cues on both inner sides of the rectangle — "there's more below" */}
           {(["left", "right"] as const).map((sideKey) => (
             <div
               key={sideKey}
               style={{
                 position: "absolute",
                 top: "50%",
-                [sideKey]: 12,
+                [sideKey]: 10,
                 transform: "translateY(-50%)",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: 9,
-                opacity: cueFade * 0.9,
+                gap: 8,
+                opacity: cueFade,
                 pointerEvents: "none",
                 transition: "opacity .3s ease",
               }}
             >
-              <span style={{ writingMode: "vertical-rl", fontSize: 9, letterSpacing: ".3em", textTransform: "uppercase", color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,.55)" }}>scroll</span>
-              <span style={{ display: "block", width: 7, height: 7, borderRight: "1.5px solid #fff", borderBottom: "1.5px solid #fff", transform: "rotate(45deg)", filter: "drop-shadow(0 1px 3px rgba(0,0,0,.55))", animation: "scroll-cue 1.6s ease-in-out infinite" }} />
+              <span style={{ writingMode: "vertical-rl", fontSize: 11, fontWeight: 600, letterSpacing: ".34em", textTransform: "uppercase", color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,.65)" }}>scroll</span>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    style={{
+                      display: "block",
+                      width: 10,
+                      height: 10,
+                      borderRight: "2px solid #fff",
+                      borderBottom: "2px solid #fff",
+                      transform: "rotate(45deg)",
+                      filter: "drop-shadow(0 1px 3px rgba(0,0,0,.65))",
+                      animation: "scroll-cue 1.5s ease-in-out infinite",
+                      animationDelay: `${i * 0.18}s`,
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>
