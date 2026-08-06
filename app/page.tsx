@@ -241,14 +241,19 @@ function HeroReel() {
     let raf = 0;
     const update = () => {
       raf = 0;
-      const track = trackRef.current;
       const v = videoRef.current;
-      if (!track) return;
-      const rect = track.getBoundingClientRect();
-      const total = track.offsetHeight - window.innerHeight;
-      const prog = Math.min(1, Math.max(0, -rect.top / Math.max(1, total)));
-      if (v && v.duration) {
-        const t = Math.min(1, prog / 0.82) * (v.duration - 0.06);
+      if (!v) return;
+      // The video is IN-FLOW (no pin) — it scrolls with the page. Drive the orbit
+      // from how far the box has travelled through the viewport, so the motion plays
+      // as it scrolls past rather than freezing the page.
+      const box = v.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const raw = (vh - box.top) / (vh + box.height); // 0 entering at bottom -> 1 leaving past top
+      // play the orbit across the central viewing band (lo..hi), start/end frames held outside it
+      const lo = 0.18, hi = 0.62;
+      const prog = Math.min(1, Math.max(0, (raw - lo) / (hi - lo)));
+      if (v.duration) {
+        const t = prog * (v.duration - 0.06);
         if (Math.abs(v.currentTime - t) > 0.01) v.currentTime = t;
       }
     };
@@ -261,9 +266,8 @@ function HeroReel() {
   }, []);
 
   return (
-    <section ref={trackRef} style={{ height: "150vh", position: "relative", background: "#fff" }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "6vh 6vw" }}>
-        {/* wrapper holds the rectangle + the side scroll cues */}
+    <section ref={trackRef} style={{ background: "#fff", padding: "16vh 6vw", display: "flex", justifyContent: "center" }}>
+        {/* wrapper holds the rectangle + the side scroll cues; scrolls WITH the page (no pin) */}
         <div style={{ position: "relative", width: "min(80vw, 560px)", aspectRatio: "16 / 9" }}>
           {/* video rectangle */}
           <div style={{ position: "absolute", inset: 0, borderRadius: 16, overflow: "hidden", boxShadow: "0 30px 70px rgba(232,41,92,.16), 0 6px 22px rgba(0,0,0,.10)", border: "1px solid #ffe0ea" }}>
@@ -310,7 +314,6 @@ function HeroReel() {
             </div>
           ))}
         </div>
-      </div>
     </section>
   );
 }
