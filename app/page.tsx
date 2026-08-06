@@ -572,7 +572,7 @@ export default function Home() {
 
           {/* Left: text */}
           <Reveal>
-            <p className="text-xs tracking-[0.35em] uppercase text-gray-400 font-medium mb-8">
+            <p className="relative z-20 text-xs tracking-[0.35em] uppercase text-gray-400 font-medium mb-8">
               Dallas, TX &nbsp;·&nbsp;{" "}
               <TikTokPhone
                 src="/tiktok/real-estate.mp4"
