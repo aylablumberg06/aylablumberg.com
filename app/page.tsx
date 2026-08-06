@@ -262,20 +262,22 @@ function HeroReel() {
     <section ref={trackRef} style={{ height: "150vh", position: "relative", background: "#fff" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "6vh 6vw" }}>
         {/* wrapper holds the rectangle + the side scroll cues */}
-        <div style={{ position: "relative", width: "min(90vw, 560px)", aspectRatio: "16 / 9" }}>
+        <div style={{ position: "relative", width: "min(80vw, 560px)", aspectRatio: "16 / 9" }}>
           {/* video rectangle */}
           <div style={{ position: "absolute", inset: 0, borderRadius: 16, overflow: "hidden", boxShadow: "0 30px 70px rgba(232,41,92,.16), 0 6px 22px rgba(0,0,0,.10)", border: "1px solid #ffe0ea" }}>
             <video ref={videoRef} src="/hero/hero-orbit-kf.mp4" poster="/hero/hero-orbit-poster.jpg" muted playsInline preload="auto" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
 
-          {/* scroll cues on both inner sides of the rectangle — "there's more below" */}
+          {/* scroll cues just OUTSIDE the rectangle on both sides, pink — "there's more below" */}
           {(["left", "right"] as const).map((sideKey) => (
             <div
               key={sideKey}
               style={{
                 position: "absolute",
                 top: "50%",
-                [sideKey]: 10,
+                // sit just outside the box: pin to the opposite edge at 100% and nudge out
+                [sideKey === "left" ? "right" : "left"]: "100%",
+                [sideKey === "left" ? "marginRight" : "marginLeft"]: 14,
                 transform: "translateY(-50%)",
                 display: "flex",
                 flexDirection: "column",
@@ -286,7 +288,7 @@ function HeroReel() {
                 transition: "opacity .3s ease",
               }}
             >
-              <span style={{ writingMode: "vertical-rl", fontSize: 11, fontWeight: 600, letterSpacing: ".34em", textTransform: "uppercase", color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,.65)" }}>scroll</span>
+              <span style={{ writingMode: "vertical-rl", fontSize: 11, fontWeight: 700, letterSpacing: ".34em", textTransform: "uppercase", color: "#e8295c" }}>scroll</span>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
                 {[0, 1, 2].map((i) => (
                   <span
@@ -295,10 +297,9 @@ function HeroReel() {
                       display: "block",
                       width: 10,
                       height: 10,
-                      borderRight: "2px solid #fff",
-                      borderBottom: "2px solid #fff",
+                      borderRight: "2px solid #e8295c",
+                      borderBottom: "2px solid #e8295c",
                       transform: "rotate(45deg)",
-                      filter: "drop-shadow(0 1px 3px rgba(0,0,0,.65))",
                       animation: "scroll-cue 1.5s ease-in-out infinite",
                       animationDelay: `${i * 0.18}s`,
                     }}
