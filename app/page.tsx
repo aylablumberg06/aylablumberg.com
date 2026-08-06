@@ -243,11 +243,11 @@ function HeroReel() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const v = videoRef.current;
-      if (!v) return;
+    const v = videoRef.current;
+    const track = trackRef.current;
+    if (!v) return;
+
+    const apply = () => {
       // The video is IN-FLOW (no pin) — it scrolls with the page. Drive the orbit
       // from how far the box has travelled through the viewport, so the motion plays
       // as it scrolls past rather than freezing the page.
@@ -257,17 +257,36 @@ function HeroReel() {
       // play the orbit across the central viewing band (lo..hi), start/end frames held outside it
       const lo = 0.18, hi = 0.62;
       const prog = Math.min(1, Math.max(0, (raw - lo) / (hi - lo)));
-      if (v.duration) {
-        const t = prog * (v.duration - 0.06);
-        if (Math.abs(v.currentTime - t) > 0.01) v.currentTime = t;
+      const dur = v.duration;
+      if (dur && isFinite(dur)) {
+        const t = prog * (dur - 0.06);
+        if (Math.abs(v.currentTime - t) > 0.01) { try { v.currentTime = t; } catch {} }
       }
     };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-    if (videoRef.current) videoRef.current.pause();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    update();
-    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
+
+    // Drive from a continuous rAF loop while the reel is near the viewport — NOT from
+    // "scroll" events: iOS Safari suppresses scroll events during a finger-flick, which
+    // made the video look frozen while actually scrolling. rAF ticks every frame regardless.
+    let raf = 0;
+    let running = false;
+    const tick = () => { apply(); raf = requestAnimationFrame(tick); };
+    const start = () => { if (!running) { running = true; raf = requestAnimationFrame(tick); } };
+    const stop = () => { if (running) { running = false; cancelAnimationFrame(raf); } };
+
+    v.pause();
+    // iOS won't paint a seeked frame until the video has been "activated"; a muted
+    // play()/pause() primes it so scrubbing actually renders.
+    const prime = () => { v.play().then(() => v.pause()).catch(() => {}); };
+    if (v.readyState >= 2) prime(); else v.addEventListener("loadeddata", prime, { once: true });
+
+    const io = new IntersectionObserver(
+      (entries) => { entries.forEach((e) => (e.isIntersecting ? start() : stop())); },
+      { rootMargin: "120% 0px 120% 0px" } // run a bit before/after it's on screen
+    );
+    if (track) io.observe(track);
+    apply();
+
+    return () => { stop(); io.disconnect(); };
   }, []);
 
   return (
