@@ -222,16 +222,6 @@ function Accordion() {
 
 /* ─── HERO REEL (small under-the-name scroll-scrub video, code ON the monitor) ─── */
 
-const COVER_CODE = [
-  "const ayla = {",
-  "  role: 'realtor',",
-  "  city: 'Dallas',",
-  "  build: ['brand','AI'],",
-  "  license: 2026,",
-  "}",
-  "ship(ayla)",
-].join("\n");
-
 function ssmooth(a: number, b: number, x: number) {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
@@ -266,48 +256,40 @@ function HeroReel() {
     return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
   }, []);
 
-  const typed = COVER_CODE.slice(0, Math.floor(ssmooth(0.05, 0.72, p) * COVER_CODE.length));
-  const codeFade = 1 - ssmooth(0.9, 1, p); // screen edges away only at the very end
-  // monitor screen bounds tracked across the orbit (measured from the clip, % of the 16:9 frame)
-  const L = 20.5 + 2.5 * p, T = 35.5 + 2.0 * p, W = 26.5 - 8.0 * p, H = 29.0 + 2.5 * p;
+  const cueFade = 1 - ssmooth(0.04, 0.3, p); // side cues fade once the viewer starts scrolling
 
   return (
     <section ref={trackRef} style={{ height: "150vh", position: "relative", background: "#fff" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", padding: "6vh 6vw" }}>
-        {/* small centered video rectangle */}
-        <div style={{ position: "relative", width: "min(90vw, 560px)", aspectRatio: "16 / 9", borderRadius: 16, overflow: "hidden", boxShadow: "0 30px 70px rgba(232,41,92,.16), 0 6px 22px rgba(0,0,0,.10)", border: "1px solid #ffe0ea" }}>
-          <video ref={videoRef} src="/hero/hero-orbit-kf.mp4" poster="/hero/hero-orbit-poster.jpg" muted playsInline preload="auto" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+        {/* wrapper holds the rectangle + the side scroll cues */}
+        <div style={{ position: "relative", width: "min(90vw, 560px)", aspectRatio: "16 / 9" }}>
+          {/* video rectangle */}
+          <div style={{ position: "absolute", inset: 0, borderRadius: 16, overflow: "hidden", boxShadow: "0 30px 70px rgba(232,41,92,.16), 0 6px 22px rgba(0,0,0,.10)", border: "1px solid #ffe0ea" }}>
+            <video ref={videoRef} src="/hero/hero-orbit-kf.mp4" poster="/hero/hero-orbit-poster.jpg" muted playsInline preload="auto" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
 
-          {/* code locked INSIDE the monitor's dark screen area and clipped to it */}
-          <div
-            style={{
-              position: "absolute",
-              left: `${L}%`, top: `${T}%`, width: `${W}%`, height: `${H}%`,
-              transform: `perspective(720px) rotateY(${-7 - 4 * p}deg)`,
-              transformOrigin: "center",
-              opacity: codeFade,
-              pointerEvents: "none",
-              overflow: "hidden",
-              borderRadius: 3,
-              background: "rgba(5,9,7,0.94)",
-            }}
-          >
-            <pre
+          {/* subtle "scroll" cues on both inner sides of the rectangle */}
+          {(["left", "right"] as const).map((sideKey) => (
+            <div
+              key={sideKey}
               style={{
-                margin: 0,
-                padding: "5% 6%",
-                color: "#8dffb0",
-                fontFamily: "ui-monospace,SFMono-Regular,Menlo,monospace",
-                fontSize: "clamp(4px,1.05vw,9px)",
-                lineHeight: 1.32,
-                whiteSpace: "pre",
-                textShadow: "0 0 4px rgba(110,255,160,.6)",
+                position: "absolute",
+                top: "50%",
+                [sideKey]: 12,
+                transform: "translateY(-50%)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 9,
+                opacity: cueFade * 0.9,
+                pointerEvents: "none",
+                transition: "opacity .3s ease",
               }}
             >
-              {typed}
-              <span style={{ background: "#8dffb0", color: "transparent", animation: "name-appear 1s steps(1) infinite alternate" }}>_</span>
-            </pre>
-          </div>
+              <span style={{ writingMode: "vertical-rl", fontSize: 9, letterSpacing: ".3em", textTransform: "uppercase", color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,.55)" }}>scroll</span>
+              <span style={{ display: "block", width: 7, height: 7, borderRight: "1.5px solid #fff", borderBottom: "1.5px solid #fff", transform: "rotate(45deg)", filter: "drop-shadow(0 1px 3px rgba(0,0,0,.55))", animation: "scroll-cue 1.6s ease-in-out infinite" }} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
